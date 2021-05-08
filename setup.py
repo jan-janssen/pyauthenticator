@@ -2,11 +2,12 @@
 Setuptools based setup module
 """
 from setuptools import setup, find_packages
+import versioneer
 
 
 setup(
     name='twofactorcmd',
-    version="0.0.1",
+    version=versioneer.get_version(),
     description='Generate optauth codes as used by two factor authentication',
     url='https://github.com/jan-janssen/twofactorcmd',
     author='Jan Janssen',
@@ -17,6 +18,7 @@ setup(
         'otpauth',
         'qrcode',
     ],
+    cmdclass=versioneer.get_cmdclass(),
     entry_points={
         "console_scripts": [
             'twofactorcmd=twofactorcmd.cmd:main'
