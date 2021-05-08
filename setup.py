@@ -6,10 +6,10 @@ import versioneer
 
 
 setup(
-    name='twofactorcmd',
+    name='pyauthenticator',
     version=versioneer.get_version(),
-    description='Generate optauth codes as used by two factor authentication',
-    url='https://github.com/jan-janssen/twofactorcmd',
+    description='Similar to the Google authenticator just written in python.',
+    url='https://github.com/jan-janssen/pyauthenticator',
     author='Jan Janssen',
     author_email='jan.janssen@outlook.com',
     license='BSD',
@@ -21,7 +21,7 @@ setup(
     cmdclass=versioneer.get_cmdclass(),
     entry_points={
         "console_scripts": [
-            'twofactorcmd=twofactorcmd.cmd:main'
+            'pyauthenticator=pyauthenticator.cmd:main'
         ]
     }
 )

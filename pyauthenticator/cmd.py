@@ -9,7 +9,7 @@ from otpauth import OtpAuth
 import qrcode
 
 
-config_file = "~/.twofactorcmd"
+config_file = "~/.pyauthenticator"
 
 
 def load_config():
@@ -182,7 +182,7 @@ def main():
     """
     Main function primarly used for the command line interface
     """
-    parser = argparse.ArgumentParser(prog="twofactorcmd")
+    parser = argparse.ArgumentParser(prog="pyauthenticator")
     parser.add_argument(
         "service",
         help="Service to generate optauth code for. Available services are: "

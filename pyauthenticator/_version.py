@@ -40,9 +40,9 @@ def get_config():
     cfg = VersioneerConfig()
     cfg.VCS = "git"
     cfg.style = "pep440-pre"
-    cfg.tag_prefix = "twofactorcmd-"
-    cfg.parentdir_prefix = "twofactorcmd"
-    cfg.versionfile_source = "twofactorcmd/_version.py"
+    cfg.tag_prefix = "pyauthenticator-"
+    cfg.parentdir_prefix = "pyauthenticator"
+    cfg.versionfile_source = "pyauthenticator/_version.py"
     cfg.verbose = False
     return cfg
 
