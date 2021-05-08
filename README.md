@@ -43,3 +43,13 @@ with open(config_file, "w") as f:
     json.dump(config_content, f)
 ```
 Replace `<username>` and `<secret>` with your user details, which are included in the QR code.
+
+## Convert QRcodes
+To extract the optauth url from an qrcode use:
+```
+from pyzbar.pyzbar import decode
+from PIL import Image
+
+file_name = "qrcode.png"
+print(decode(Image.open(file_name))[0].data.decode("utf-8"))
+```
