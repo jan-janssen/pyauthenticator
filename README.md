@@ -32,10 +32,13 @@ The configuration is stored in `~/.twofactorcmd` it is written in the JSON forma
 config file can be created like this:
 ```
 import json
-config_file = `~/.twofactorcmd`
+import os
+
+config_file = os.path.expanduser("~/.twofactorcmd")
 config_content = {
     "github": "otpauth://totp/GitHub:<username>?secret=<secret>&issuer=GitHub",
-    }
+}
+
 with open(config_file, "w") as f:
     json.dump(config_content, f)
 ```

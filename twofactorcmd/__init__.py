@@ -1,3 +1,6 @@
+"""
+Generate two factor authentication codes on the command line
+"""
 from twofactorcmd.cmd import load_config, generate_qrcode, get_two_factor_code as get_two_factor_code_internal
 
 
