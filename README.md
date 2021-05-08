@@ -11,9 +11,14 @@ pip install git+https://github.com/jan-janssen/pyauthenticator.git
 ```
 
 ## Command Line
+Add new service
+```
+pyauthenticator --add /path/to/qrcode.png <service name>
+```
+
 Generate authentication code
 ```
-pyauthenticator <service>
+pyauthenticator <service name>
 ```
 
 Get help and a list of all available services:
@@ -29,28 +34,9 @@ get_two_factor_code(service)
 ```
 
 ## Configuration
-The configuration is stored in `~/.twofactorcmd` it is written in the JSON format. For a given service like `github` the
-config file can be created like this:
+The configuration is stored in `~/.pyauthenticator` it is written in the JSON format. For a given service like `github`
+the config file contains:
 ```
-import json
-import os
-
-config_file = os.path.expanduser("~/.twofactorcmd")
-config_content = {
-    "github": "otpauth://totp/GitHub:<username>?secret=<secret>&issuer=GitHub",
-}
-
-with open(config_file, "w") as f:
-    json.dump(config_content, f)
+{"github": "otpauth://totp/GitHub:<username>?secret=<secret>&issuer=GitHub"}
 ```
-Replace `<username>` and `<secret>` with your user details, which are included in the QR code.
-
-## Convert QRcodes
-To extract the optauth url from an qrcode use:
-```
-from pyzbar.pyzbar import decode
-from PIL import Image
-
-file_name = "qrcode.png"
-print(decode(Image.open(file_name))[0].data.decode("utf-8"))
-```
+With the github username `<username>` and the corresponding secret `<secret>` contained in the QR code

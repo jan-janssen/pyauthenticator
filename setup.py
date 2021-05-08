@@ -17,6 +17,8 @@ setup(
     install_requires=[
         'otpauth',
         'qrcode',
+        'pyzbar',
+        'pillow'
     ],
     cmdclass=versioneer.get_cmdclass(),
     entry_points={

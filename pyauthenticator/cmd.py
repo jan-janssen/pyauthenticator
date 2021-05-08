@@ -6,10 +6,29 @@ import base64
 import json
 import os
 from otpauth import OtpAuth
+from PIL import Image
+from pyzbar.pyzbar import decode
 import qrcode
 
 
 config_file = "~/.pyauthenticator"
+
+
+def expand_path(path):
+    """
+    Expand path by expanding the user variable and converting the path to an absolute path
+
+    Args:
+        path (str): path before expansion
+
+    Returns:
+        str: expanded path
+    """
+    return os.path.abspath(
+        os.path.expanduser(
+            path
+        )
+    )
 
 
 def load_config():
@@ -19,11 +38,7 @@ def load_config():
     Returns:
         dict: Dictionary with service names as keys and the otpauth url as values
     """
-    abs_config_path = os.path.abspath(
-        os.path.expanduser(
-            config_file
-        )
-    )
+    abs_config_path = expand_path(path=config_file)
     if os.path.exists(abs_config_path):
         with open(abs_config_path, "r") as f:
             return json.load(f)
@@ -31,12 +46,23 @@ def load_config():
         return {}
 
 
+def write_config(config_dict):
+    """
+    Write configuration file
+
+    Args:
+        config_dict (dict): configuration dictionary
+    """
+    with open(expand_path(path=config_file), "w") as f:
+        json.dump(config_dict, f)
+
+
 def get_otpauth_dict(otpauth_str):
     """
     Parse otpauth url
 
     Args:
-        otpauth_str: otpauth url as string
+        otpauth_str (str): otpauth url as string
 
     Returns:
         dict: Dictionary with the parameters of the otpauth url as key-value pairs
@@ -144,6 +170,22 @@ def get_two_factor_code(key, config_dict):
     )
 
 
+def add_service(key, qrcode_png_file_name, config_dict):
+    """
+    Add new service to configuration file
+
+    Args:
+        key (str): lower case name of the service
+        qrcode_png_file_name (str): path to the png file which contains the qr code
+        config_dict (dict): configuration dictionary
+    """
+    otpauth_str = decode(Image.open(qrcode_png_file_name))[0].data.decode("utf-8")
+    config_dict[key] = otpauth_str
+    write_config(
+        config_dict=config_dict
+    )
+
+
 def generate_qrcode(key, config_dict, file_name=None):
     """
     Write qrcode to file to scan it with a mobile application
@@ -189,12 +231,27 @@ def main():
              + str(list_services(config_dict=load_config()))
     )
     parser.add_argument(
-        "--qrcode",
+        "-qr", "--qrcode",
+        action="store_true",
         help="Generate qrcode as <service.png> file."
+    )
+    parser.add_argument(
+        "-a", "--add",
+        help="Add service by providing the qrcode png file as additional argument."
     )
     args = parser.parse_args()
     if args.qrcode:
-        generate_qrcode(key=args.service, config_dict=load_config())
+        generate_qrcode(
+            key=args.service,
+            config_dict=load_config()
+        )
+    elif args.add:
+        add_service(
+            key=args.service,
+            qrcode_png_file_name=args.add,
+            config_dict=load_config()
+        )
+        print(args.service, "added.")
     else:
         print(
             get_two_factor_code(
