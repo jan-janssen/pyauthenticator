@@ -24,8 +24,11 @@ def load_config():
             config_file
         )
     )
-    with open(abs_config_path, "r") as f:
-        return json.load(f)
+    if os.path.exists(abs_config_path):
+        with open(abs_config_path, "r") as f:
+            return json.load(f)
+    else:
+        return {}
 
 
 def get_otpauth_dict(otpauth_str):
