@@ -27,10 +27,10 @@ jobs:
     - name: Test
       shell: bash -l {0}
       run: |
-        coverage run -m unittest discover tests
-        coverage run pyauthenticator test
-        coverage run pyauthenticator -qr test
-        coverage run pyauthenticator -a test.png test2
+        coverage run -a -m unittest discover tests
+        coverage run -a pyauthenticator test
+        coverage run -a pyauthenticator -qr test
+        coverage run -a pyauthenticator -a test.png test2
     - name: Coverage
       shell: bash -l {0}
       run: |
