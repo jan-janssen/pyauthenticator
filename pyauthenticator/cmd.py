@@ -11,7 +11,7 @@ from pyauthenticator.share import (
 )
 
 
-def main():
+def command_line_parser():
     """
     Main function primarly used for the command line interface
     """
@@ -20,7 +20,7 @@ def main():
     parser.add_argument(
         "service",
         help="Service to generate optauth code for. Available services are: "
-        + str(list_services(config_dict=config_dict)),
+             + str(list_services(config_dict=config_dict)),
     )
     parser.add_argument(
         "-qr",
@@ -43,6 +43,3 @@ def main():
         print(args.service, "added.")
     else:
         print(get_two_factor_code(key=args.service, config_dict=config_dict))
-
-
-main()
