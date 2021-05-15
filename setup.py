@@ -15,6 +15,7 @@ setup(
     license='BSD',
     packages=find_packages(exclude=["*tests*"]),
     install_requires=[
+        'argcomplete',
         'otpauth',
         'qrcode',
         'pyzbar',
