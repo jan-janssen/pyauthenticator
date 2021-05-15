@@ -4,8 +4,8 @@ dependencies:
 - python
 - coverage
 - coveralls
-- qrcode
-- otpauth
-- pyzbar
-- zbar
-- pillow
+- qrcode=6.1
+- otpauth=1.0.1
+- pyzbar=0.1.8
+- zbar=0.10
+- pillow=8.1.2
