@@ -23,7 +23,7 @@ setup(
     cmdclass=versioneer.get_cmdclass(),
     entry_points={
         "console_scripts": [
-            'pyauthenticator=pyauthenticator:main'
+            'pyauthenticator=pyauthenticator.__main__:main'
         ]
     }
 )
