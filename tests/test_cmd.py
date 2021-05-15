@@ -38,6 +38,27 @@ class MyTestCase(unittest.TestCase):
             config_dict = json.load(f)
         self.assertEqual(len(config_dict.keys()), 2)
 
+    def test_cmd_generate_two_factor(self):
+        code = subprocess.check_output(
+            ["coverage", "run", "python", "-m", "pyauthenticator.cmd", "test"],
+            universal_newlines=True
+        )
+        self.assertEqual(len(code.replace("\n", "")), 6)
+
+    def test_cmd_generate_qr_code(self):
+        subprocess.check_output(
+            ["coverage", "run", "python", "-m", "pyauthenticator.cmd", "-qr", "test"],
+            universal_newlines=True
+        )
+        self.assertTrue(os.path.exists("test.png"))
+        subprocess.check_output(
+            ["coverage", "run", "python", "-m", "pyauthenticator.cmd", "-a", "test.png", "test2"],
+            universal_newlines=True
+        )
+        with open(self.config_path, "r") as f:
+            config_dict = json.load(f)
+        self.assertEqual(len(config_dict.keys()), 2)
+
 
 if __name__ == '__main__':
     unittest.main()
