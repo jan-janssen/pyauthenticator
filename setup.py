@@ -18,7 +18,7 @@ setup(
         'otpauth==1.0.1',
         'qrcode==6.1',
         'pyzbar==0.1.8',
-        'pillow==8.1.2'
+        'pillow==8.2.0'
     ],
     cmdclass=versioneer.get_cmdclass(),
     entry_points={
