@@ -45,4 +45,5 @@ def main():
         print(get_two_factor_code(key=args.service, config_dict=config_dict))
 
 
-main()
+if __name__ == '__main__':
+    main()
