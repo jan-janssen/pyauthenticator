@@ -19,7 +19,7 @@ def main():
     parser.add_argument(
         "service",
         help="Service to generate optauth code for. Available services are: "
-             + str(list_services(config_dict=load_config())),
+        + str(list_services(config_dict=load_config())),
     )
     parser.add_argument(
         "-qr",
