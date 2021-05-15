@@ -12,7 +12,7 @@ class MyTestCase(unittest.TestCase):
             "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test"
         }
         cls.config_path = expand_path(config_file)
-        if os.path.exists(cls.config_path):
+        if not os.path.exists(cls.config_path):
             write_config(
                 config_dict=cls.config_dict
             )
