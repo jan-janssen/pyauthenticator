@@ -28,11 +28,8 @@ jobs:
       shell: bash -l {0}
       run: |
         coverage run -a -m unittest discover tests
-        coverage run -a pyauthenticator test
-        coverage run -a pyauthenticator -qr test
-        coverage run -a pyauthenticator -a test.png test2
+        coverage combine
     - name: Coverage
       shell: bash -l {0}
       run: |
-        coverage combine
         coveralls
