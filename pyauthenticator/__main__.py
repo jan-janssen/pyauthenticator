@@ -11,7 +11,7 @@ from pyauthenticator.share import (
 )
 
 
-def main():
+def command_line_parser():
     """
     Main function primarly used for the command line interface
     """
@@ -46,4 +46,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    command_line_parser()
