@@ -11,19 +11,13 @@ on:
 
 jobs:
   build:
-
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        operating-system: [ubuntu-latest, macos-latest]
-        python-version: [3.8, 3.9]
-
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - uses: conda-incubator/setup-miniconda@v2
       with:
         auto-update-conda: true
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.9
         channel-priority: strict
         environment-file: .ci_support/environment.yml
     - name: Setup
@@ -33,3 +27,8 @@ jobs:
     - name: Test
       shell: bash -l {0}
       run: coverage run --omit pyauthenticator/_version.py -m unittest discover tests
+    - name: Coverage
+      shell: bash -l {0}
+      run: |
+        coverage combine
+        coveralls

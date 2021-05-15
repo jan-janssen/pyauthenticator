@@ -2,6 +2,8 @@ channels:
 - conda-forge
 dependencies:
 - python
+- coverage
+- coveralls
 - qrcode
 - otpauth
 - pyzbar
