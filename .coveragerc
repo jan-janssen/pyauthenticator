@@ -2,4 +2,3 @@
 [run]
 source = pyauthenticator
 omit = pyauthenticator/_version.py
-concurrency = multiprocessing
