@@ -11,11 +11,10 @@ class TestUserInterface(unittest.TestCase):
             "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test"
         }
         cls.config_path = expand_path(config_file)
-        if os.path.exists(cls.config_path):
-            raise ValueError
-        write_config(
-            config_dict=cls.config_dict
-        )
+        if not os.path.exists(cls.config_path):
+            write_config(
+                config_dict=cls.config_dict
+            )
 
     def test_get_two_factor_code(self):
         code = get_two_factor_code(service="test")

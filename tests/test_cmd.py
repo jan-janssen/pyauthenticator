@@ -13,10 +13,9 @@ class MyTestCase(unittest.TestCase):
         }
         cls.config_path = expand_path(config_file)
         if os.path.exists(cls.config_path):
-            raise ValueError
-        write_config(
-            config_dict=cls.config_dict
-        )
+            write_config(
+                config_dict=cls.config_dict
+            )
 
     def test_generate_two_factor(self):
         code = subprocess.check_output(["pyauthenticator", "test"], universal_newlines=True)
@@ -28,7 +27,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(os.path.exists("test.png"))
         subprocess.check_output(["pyauthenticator", "-a", "test.png", "test2"], universal_newlines=True)
         with open(self.config_path, "r") as f:
-            config_dict = json.read(f)
+            config_dict = json.load(f)
         self.assertEqual(len(config_dict.keys()), 2)
 
 
