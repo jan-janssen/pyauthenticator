@@ -26,7 +26,11 @@ jobs:
         pip install --no-deps .
     - name: Test
       shell: bash -l {0}
-      run: coverage run -m unittest discover tests
+      run: |
+        coverage run -m unittest discover tests
+        coverage run pyauthenticator test
+        coverage run pyauthenticator -qr test
+        coverage run pyauthenticator -a test.png test2
     - name: Coverage
       shell: bash -l {0}
       run: |
