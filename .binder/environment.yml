@@ -6,4 +6,5 @@ dependencies:
 - qrcode
 - otpauth
 - pyzbar
+- zbar
 - pillow
