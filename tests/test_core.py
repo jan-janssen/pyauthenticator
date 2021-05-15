@@ -11,7 +11,7 @@ class TestCore(unittest.TestCase):
     def setUpClass(cls):
         cls.qr_code_png = "test.png"
         cls.config_dict = {
-            "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test"
+            "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test&period=60"
         }
         generate_qrcode(
             key="test",

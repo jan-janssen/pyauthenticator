@@ -26,7 +26,9 @@ jobs:
         pip install --no-deps .
     - name: Test
       shell: bash -l {0}
-      run: coverage run --omit pyauthenticator/_version.py -m unittest discover tests
+      run: |
+        coverage run -a -m unittest discover tests
+        coverage combine
     - name: Coverage
       shell: bash -l {0}
       run: |
