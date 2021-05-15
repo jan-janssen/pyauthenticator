@@ -24,11 +24,7 @@ def expand_path(path):
     Returns:
         str: expanded path
     """
-    return os.path.abspath(
-        os.path.expanduser(
-            path
-        )
-    )
+    return os.path.abspath(os.path.expanduser(path))
 
 
 def load_config(config_file_to_load=config_file):
@@ -74,8 +70,7 @@ def get_otpauth_dict(otpauth_str):
     return {
         kv[0]: kv[1]
         for kv in [
-            otpvar.split("=")
-            for otpvar in otpauth_str.replace("?", "&").split("&")[1:]
+            otpvar.split("=") for otpvar in otpauth_str.replace("?", "&").split("&")[1:]
         ]
     }
 
@@ -116,11 +111,11 @@ def init_auth(otpauth_secret):
         secret=base64.b32decode(
             add_padding(
                 main_str=otpauth_secret,
-                padding_str='=',
+                padding_str="=",
                 padding_length=8,
-                inverse_padding=False
+                inverse_padding=False,
             ),
-            True
+            True,
         )
     )
 
@@ -148,33 +143,21 @@ def get_two_factor_code(key, config_dict):
     Returns:
         str: two factor authentication code as string
     """
-    check_if_key_in_config(
-        key=key,
-        config_dict=config_dict
-    )
-    decode_dict_internal = get_otpauth_dict(
-        otpauth_str=config_dict[key]
-    )
-    auth = init_auth(
-        otpauth_secret=decode_dict_internal["secret"]
-    )
+    check_if_key_in_config(key=key, config_dict=config_dict)
+    decode_dict_internal = get_otpauth_dict(otpauth_str=config_dict[key])
+    auth = init_auth(otpauth_secret=decode_dict_internal["secret"])
     if "period" in decode_dict_internal.keys():
-        auth_code = auth.totp(
-            period=int(
-                decode_dict_internal['period']
-            )
-        )
+        auth_code = auth.totp(period=int(decode_dict_internal["period"]))
     else:
         auth_code = auth.totp()
     return add_padding(
-        main_str=str(auth_code),
-        padding_str="0",
-        padding_length=6,
-        inverse_padding=True
+        main_str=str(auth_code), padding_str="0", padding_length=6, inverse_padding=True
     )
 
 
-def add_service(key, qrcode_png_file_name, config_dict, config_file_to_write=config_file):
+def add_service(
+    key, qrcode_png_file_name, config_dict, config_file_to_write=config_file
+):
     """
     Add new service to configuration file
 
@@ -186,10 +169,7 @@ def add_service(key, qrcode_png_file_name, config_dict, config_file_to_write=con
     """
     otpauth_str = decode(Image.open(qrcode_png_file_name))[0].data.decode("utf-8")
     config_dict[key] = otpauth_str
-    write_config(
-        config_dict=config_dict,
-        config_file_to_write=config_file_to_write
-    )
+    write_config(config_dict=config_dict, config_file_to_write=config_file_to_write)
 
 
 def generate_qrcode(key, config_dict, file_name=None):
@@ -203,14 +183,8 @@ def generate_qrcode(key, config_dict, file_name=None):
     """
     if file_name is None:
         file_name = key + ".png"
-    check_if_key_in_config(
-        key=key,
-        config_dict=config_dict
-    )
-    qrcode.make(config_dict[key]).save(
-        file_name,
-        "PNG"
-    )
+    check_if_key_in_config(key=key, config_dict=config_dict)
+    qrcode.make(config_dict[key]).save(file_name, "PNG")
 
 
 def list_services(config_dict):
