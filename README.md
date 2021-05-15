@@ -5,9 +5,14 @@ suitable for automation this python packages allows to generate two factor authe
 or in python.
 
 ## Installation
-Install via pip
+Install via conda:
 ```
-pip install git+https://github.com/jan-janssen/pyauthenticator.git
+conda install -c conda-forge pyauthenticator
+```
+
+Install via pip:
+```
+pip install pyauthenticator
 ```
 
 ## Command Line
