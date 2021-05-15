@@ -1,10 +1,11 @@
 import unittest
 import os
-from pyauthenticator import get_two_factor_code, write_qrcode_to_file
+import subprocess
+import json
 from pyauthenticator.share import expand_path, write_config, config_file
 
 
-class TestUserInterface(unittest.TestCase):
+class MyTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_dict = {
@@ -17,13 +18,17 @@ class TestUserInterface(unittest.TestCase):
             config_dict=cls.config_dict
         )
 
-    def test_get_two_factor_code(self):
-        code = get_two_factor_code(service="test")
+    def test_generate_two_factor(self):
+        code = subprocess.check_output(["pyauthenticator", "test"], universal_newlines=True)
         self.assertEqual(len(code), 6)
 
-    def test_write_qrcode_to_file(self):
-        write_qrcode_to_file(service="test")
+    def test_generate_qr_code(self):
+        subprocess.check_output(["pyauthenticator", "-qr", "test"], universal_newlines=True)
         self.assertTrue(os.path.exists("test.png"))
+        subprocess.check_output(["pyauthenticator", "-a", "test.png", "test2"], universal_newlines=True)
+        with open(self.config_path, "r") as f:
+            config_dict = json.read(f)
+        self.assertEqual(len(config_dict.keys()), 2)
 
 
 if __name__ == '__main__':
