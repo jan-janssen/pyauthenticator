@@ -19,8 +19,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_generate_two_factor(self):
         code = subprocess.check_output(["pyauthenticator", "test"], universal_newlines=True)
-        print(code)
-        self.assertEqual(len(code), 7)
+        self.assertEqual(len(code.replace("\n", "")), 6)
 
     def test_generate_qr_code(self):
         subprocess.check_output(["pyauthenticator", "-qr", "test"], universal_newlines=True)
