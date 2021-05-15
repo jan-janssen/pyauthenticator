@@ -15,15 +15,15 @@ setup(
     license='BSD',
     packages=find_packages(exclude=["*tests*"]),
     install_requires=[
-        'otpauth',
-        'qrcode',
-        'pyzbar',
-        'pillow'
+        'otpauth==6.1',
+        'qrcode==1.0.1',
+        'pyzbar==0.1.8',
+        'pillow==8.1.2'
     ],
     cmdclass=versioneer.get_cmdclass(),
     entry_points={
         "console_scripts": [
-            'pyauthenticator=pyauthenticator:main'
+            'pyauthenticator=pyauthenticator.__main__:main'
         ]
     }
 )
