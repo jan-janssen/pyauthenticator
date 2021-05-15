@@ -16,10 +16,11 @@ def main():
     Main function primarly used for the command line interface
     """
     parser = argparse.ArgumentParser(prog="pyauthenticator")
+    config_dict = load_config()
     parser.add_argument(
         "service",
         help="Service to generate optauth code for. Available services are: "
-        + str(list_services(config_dict=load_config())),
+        + str(list_services(config_dict=config_dict)),
     )
     parser.add_argument(
         "-qr",
@@ -34,14 +35,15 @@ def main():
     )
     args = parser.parse_args()
     if args.qrcode:
-        generate_qrcode(key=args.service, config_dict=load_config())
+        generate_qrcode(key=args.service, config_dict=config_dict)
     elif args.add:
         add_service(
-            key=args.service, qrcode_png_file_name=args.add, config_dict=load_config()
+            key=args.service, qrcode_png_file_name=args.add, config_dict=config_dict
         )
         print(args.service, "added.")
     else:
-        print(get_two_factor_code(key=args.service, config_dict=load_config()))
+        print(get_two_factor_code(key=args.service, config_dict=config_dict))
 
 
-main()
+if __name__ == "__main__":
+    main()
