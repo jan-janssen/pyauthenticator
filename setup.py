@@ -13,7 +13,7 @@ setup(
     author='Jan Janssen',
     author_email='jan.janssen@outlook.com',
     license='BSD',
-    packages=find_packages(),
+    packages=find_packages(exclude=["*tests*"]),
     install_requires=[
         'otpauth',
         'qrcode',
