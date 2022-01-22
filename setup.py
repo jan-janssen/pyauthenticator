@@ -9,7 +9,7 @@ setup(
     name='pyauthenticator',
     version=versioneer.get_version(),
     description='Similar to the Google authenticator just written in python.',
-    url='https://github.com/jan-janssen/pyauthenticator',
+    url='https://github.com/pyscioffice/pyauthenticator',
     author='Jan Janssen',
     author_email='jan.janssen@outlook.com',
     license='BSD',
