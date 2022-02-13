@@ -1,6 +1,6 @@
 # pyauthenticator
-[![Python package](https://github.com/pyscioffice/pyauthenticator/actions/workflows/unittest.yml/badge.svg?branch=master)](https://github.com/pyscioffice/pyauthenticator/actions/workflows/unittest.yml)
-[![Coverage Status](https://coveralls.io/repos/github/pyscioffice/pyauthenticator/badge.svg?branch=master)](https://coveralls.io/github/pyscioffice/pyauthenticator?branch=master)
+[![Python package](https://github.com/pyscioffice/pyauthenticator/actions/workflows/unittest.yml/badge.svg?branch=main)](https://github.com/pyscioffice/pyauthenticator/actions/workflows/unittest.yml)
+[![Coverage Status](https://coveralls.io/repos/github/pyscioffice/pyauthenticator/badge.svg?branch=main)](https://coveralls.io/github/pyscioffice/pyauthenticator?branch=main)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Similar to the Google authenticator just written in Python. With more and more services requiring two factor
