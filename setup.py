@@ -17,7 +17,7 @@ setup(
     install_requires=[
         'otpauth==1.0.1',
         'qrcode==7.3.1',
-        'pyzbar==0.1.8',
+        'pyzbar==0.1.9',
         'pillow==9.0.1',
     ],
     cmdclass=versioneer.get_cmdclass(),
