@@ -6,6 +6,6 @@ dependencies:
 - coveralls
 - qrcode=7.3
 - otpauth=1.0.1
-- pyzbar=0.1.8
+- pyzbar=0.1.9
 - zbar=0.10
 - pillow=9.0.1
