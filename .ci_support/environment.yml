@@ -4,7 +4,7 @@ dependencies:
 - python
 - coverage
 - coveralls
-- qrcode=7.3
+- qrcode=7.4
 - otpauth=1.0.1
 - pyzbar=0.1.9
 - zbar=0.10
