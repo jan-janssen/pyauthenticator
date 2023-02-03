@@ -16,7 +16,7 @@ setup(
     packages=find_packages(exclude=["*tests*"]),
     install_requires=[
         'otpauth==1.0.1',
-        'qrcode==7.3.1',
+        'qrcode==7.4.1',
         'pyzbar==0.1.9',
         'pillow==9.4.0',
     ],
