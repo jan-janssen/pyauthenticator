@@ -4,7 +4,7 @@ Shared functionality to generate two factor authentication codes
 import base64
 import json
 import os
-from otpauth import OtpAuth
+from otpauth import HOTP as OtpAuth
 from PIL import Image
 from pyzbar.pyzbar import decode
 import qrcode
