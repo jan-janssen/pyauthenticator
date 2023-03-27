@@ -15,7 +15,7 @@ setup(
     license='BSD',
     packages=find_packages(exclude=["*tests*"]),
     install_requires=[
-        'otpauth==1.0.1',
+        'otpauth==2.0.0',
         'qrcode==7.4.2',
         'pyzbar==0.1.9',
         'pillow==9.4.0',
