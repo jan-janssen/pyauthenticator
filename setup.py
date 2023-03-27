@@ -9,6 +9,7 @@ setup(
     name='pyauthenticator',
     version=versioneer.get_version(),
     description='Similar to the Google authenticator just written in python.',
+    long_description='With more and more services requiring two factor authentication without supporting application specific passwords or other forms of token based authenication suitable for automation this python packages allows to generate two factor authentication codes on the commandline or in python.',
     url='https://github.com/pyscioffice/pyauthenticator',
     author='Jan Janssen',
     author_email='jan.janssen@outlook.com',
