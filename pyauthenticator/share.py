@@ -123,7 +123,7 @@ def get_two_factor_code(key, config_dict):
     check_if_key_in_config(key=key, config_dict=config_dict)
     decode_dict_internal = get_otpauth_dict(otpauth_str=config_dict[key])
     if "period" in decode_dict_internal.keys():
-        auth_code = otpauth.TOTP(
+        totp = otpauth.TOTP(
             secret=base64.b32decode(
                 add_padding(
                     main_str=decode_dict_internal["secret"],
@@ -133,10 +133,10 @@ def get_two_factor_code(key, config_dict):
                 ),
                 True,
             ),
-            period=int(decode_dict_internal["period"])
+            period=int(decode_dict_internal["period"]),
         )
     else:
-        auth_code = otpauth.TOTP(
+        totp = otpauth.TOTP(
             secret=base64.b32decode(
                 add_padding(
                     main_str=decode_dict_internal["secret"],
@@ -148,7 +148,10 @@ def get_two_factor_code(key, config_dict):
             ),
         )
     return add_padding(
-        main_str=str(auth_code), padding_str="0", padding_length=6, inverse_padding=True
+        main_str=str(totp.string_code(totp.generate())),
+        padding_str="0",
+        padding_length=6,
+        inverse_padding=True,
     )
 
 
