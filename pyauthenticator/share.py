@@ -4,7 +4,7 @@ Shared functionality to generate two factor authentication codes
 import base64
 import json
 import os
-from otpauth import HOTP as OtpAuth
+import otpauth
 from PIL import Image
 from pyzbar.pyzbar import decode
 import qrcode
@@ -97,29 +97,6 @@ def add_padding(main_str, padding_str, padding_length, inverse_padding=False):
     return main_str
 
 
-def init_auth(otpauth_secret):
-    """
-    Initialize the authenication class
-
-    Args:
-        otpauth_secret (str): authentication secret
-
-    Returns:
-        optauth.OptAuth: authentication class object instance
-    """
-    return OtpAuth(
-        secret=base64.b32decode(
-            add_padding(
-                main_str=otpauth_secret,
-                padding_str="=",
-                padding_length=8,
-                inverse_padding=False,
-            ),
-            True,
-        )
-    )
-
-
 def check_if_key_in_config(key, config_dict):
     """
     Check if a given key is included in a dictionary, raise an ValueError if it is not.
@@ -145,11 +122,31 @@ def get_two_factor_code(key, config_dict):
     """
     check_if_key_in_config(key=key, config_dict=config_dict)
     decode_dict_internal = get_otpauth_dict(otpauth_str=config_dict[key])
-    auth = init_auth(otpauth_secret=decode_dict_internal["secret"])
     if "period" in decode_dict_internal.keys():
-        auth_code = auth.totp(period=int(decode_dict_internal["period"]))
+        auth_code = otpauth.TOTP(
+            secret=base64.b32decode(
+                add_padding(
+                    main_str=decode_dict_internal["secret"],
+                    padding_str="=",
+                    padding_length=8,
+                    inverse_padding=False,
+                ),
+                True,
+            ),
+            period=int(decode_dict_internal["period"])
+        )
     else:
-        auth_code = auth.totp()
+        auth_code = otpauth.TOTP(
+            secret=base64.b32decode(
+                add_padding(
+                    main_str=decode_dict_internal["secret"],
+                    padding_str="=",
+                    padding_length=8,
+                    inverse_padding=False,
+                ),
+                True,
+            ),
+        )
     return add_padding(
         main_str=str(auth_code), padding_str="0", padding_length=6, inverse_padding=True
     )
