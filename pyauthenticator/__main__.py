@@ -2,6 +2,7 @@
 Generate two factor authentication codes on the command line
 """
 import argparse
+import sys
 from pyauthenticator.share import (
     list_services,
     load_config,
@@ -11,10 +12,12 @@ from pyauthenticator.share import (
 )
 
 
-def command_line_parser():
+def command_line_parser(cmd_args=None):
     """
     Main function primarly used for the command line interface
     """
+    if cmd_args is None:
+        cmd_args = sys.argv[1:]
     parser = argparse.ArgumentParser(prog="pyauthenticator")
     config_dict = load_config()
     if len(config_dict) > 0:
@@ -39,14 +42,21 @@ def command_line_parser():
         "--add",
         help="Add service by providing the <qrcode.png> file as additional argument.",
     )
-    args = parser.parse_args()
+    args = parser.parse_args(args=cmd_args)
     if args.qrcode:
         generate_qrcode(key=args.service, config_dict=config_dict)
+        print("The qrcode file <" + args.service + ".png> was generated.")
     elif args.add:
         add_service(
             key=args.service, qrcode_png_file_name=args.add, config_dict=config_dict
         )
-        print(args.service, "added.")
+        print(
+            "The service '"
+            + args.service
+            + "' was added, from file <"
+            + args.add
+            + ">."
+        )
     else:
         try:
             print(get_two_factor_code(key=args.service, config_dict=config_dict))

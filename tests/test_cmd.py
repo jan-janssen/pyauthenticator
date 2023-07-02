@@ -2,10 +2,13 @@ import unittest
 import os
 import subprocess
 import json
+from contextlib import redirect_stdout
+from io import StringIO
 from pyauthenticator.share import expand_path, write_config, config_file
+from pyauthenticator.__main__ import command_line_parser
 
 
-class MyTestCase(unittest.TestCase):
+class CmdSubprocessTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_dict = {
@@ -36,7 +39,40 @@ class MyTestCase(unittest.TestCase):
         )
         with open(self.config_path, "r") as f:
             config_dict = json.load(f)
-        self.assertEqual(len(config_dict.keys()), 2)
+        self.assertTrue("test2" in config_dict.keys())
+
+
+class CmdParserTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.config_dict = {
+            "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test"
+        }
+        cls.config_path = expand_path(config_file)
+        if not os.path.exists(cls.config_path):
+            write_config(
+                config_dict=cls.config_dict
+            )
+
+    def test_main_generate_two_factor(self):
+        with redirect_stdout(StringIO()) as sout:
+            command_line_parser(cmd_args=["test"])
+        self.assertEqual(len(sout.getvalue().rstrip('\n')), 6)
+        with redirect_stdout(StringIO()) as sout:
+            command_line_parser(cmd_args=["test3"])
+        self.assertEqual(sout.getvalue().split("\n"), "The service 'test3' does not exist.")
+
+    def test_main_generate_qr_code(self):
+        with redirect_stdout(StringIO()) as sout:
+            command_line_parser(cmd_args=["-qr", "test"])
+        self.assertEqual(sout.getvalue(), "The qrcode file <test.png> was generated.\n")
+        self.assertTrue(os.path.exists("test.png"))
+        with redirect_stdout(StringIO()) as sout:
+            command_line_parser(cmd_args=["-a", "test.png", "test4"])
+        self.assertEqual(sout.getvalue(), "The service 'test4' was added, from file <test.png>.\n")
+        with open(self.config_path, "r") as f:
+            config_dict = json.load(f)
+        self.assertTrue("test4" in config_dict.keys())
 
 
 if __name__ == '__main__':
