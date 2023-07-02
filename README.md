@@ -13,32 +13,49 @@ or in python.
 ## Installation
 Install via conda:
 ```
-conda install -c conda-forge pyauthenticator
+>>> conda install -c conda-forge pyauthenticator
 ```
 
 Install via pip:
 ```
-pip install pyauthenticator
+>>> pip install pyauthenticator
 ```
 
 ## Command Line
-Add new service
+Get help and a list of all available options:
 ```
-pyauthenticator --add /path/to/qrcode.png <service name>
+>>> pyauthenticator --help
+
+usage: pyauthenticator [-h] [-qr] [-a ADD] service
+
+positional arguments:
+  service            Service to generate optauth code for. Currently no
+                     service is defined in the ~/.pyauthenticator config file.
+
+options:
+  -h, --help         show this help message and exit
+  -qr, --qrcode      Generate qrcode as <service.png> file.
+  -a ADD, --add ADD  Add service by providing the <qrcode.png> file as
+                     additional argument.
 ```
 
-Generate authentication code
+Add `google` as new service after saving the qrcode to `Screenshot 2023-07-02 at 12.45.09.png`:
 ```
-pyauthenticator <service name>
+>>> pyauthenticator google --add ~/Desktop/Screenshot\ 2023-07-02\ at\ 12.45.09.png
+
+The service 'google' was added, from file </Users/jan/Desktop/Screenshot 2023-07-02 at 12.45.09.png>
 ```
 
-Get help and a list of all available services:
+Afterwards new authentication codes can be generated for the service `google` using:
 ```
-pyauthenticator -h
+>>> pyauthenticator google
+
+087078
 ```
+Beyond google, `pyauthenticator` works for any service which implements the two factor authentication. 
 
 ## Python Interface
-Use python interface
+The same functionality is available via the python interface:
 ```
 from pyauthenticator import get_two_factor_code
 get_two_factor_code(service)
@@ -48,6 +65,6 @@ get_two_factor_code(service)
 The configuration is stored in `~/.pyauthenticator` it is written in the JSON format. For a given service like `github`
 the config file contains:
 ```
-{"github": "otpauth://totp/GitHub:<username>?secret=<secret>&issuer=GitHub"}
+{"google": "otpauth://totp/Google:<username>?secret=<secret>&issuer=Google"}
 ```
-With the github username `<username>` and the corresponding secret `<secret>` contained in the QR code
+With the Google username `<username>` and the corresponding secret `<secret>` being contained in the QR code.
