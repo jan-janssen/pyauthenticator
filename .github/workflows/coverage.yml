@@ -29,7 +29,5 @@ jobs:
       run: |
         coverage run -a -m unittest discover tests
         coverage combine
-    - name: Coverage
-      shell: bash -l {0}
-      run: |
-        coveralls
+    - name: Coveralls
+      uses: coverallsapp/github-action@v2
