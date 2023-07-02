@@ -60,16 +60,25 @@ class CmdParserTest(unittest.TestCase):
         self.assertEqual(len(sout.getvalue().rstrip('\n')), 6)
         with redirect_stdout(StringIO()) as sout:
             command_line_parser(cmd_args=["test3"])
-        self.assertEqual(sout.getvalue().split("\n"), "The service 'test3' does not exist.")
+        self.assertEqual(
+            sout.getvalue().split("\n")[0],
+            "The service \"test3\" does not exist."
+        )
 
     def test_main_generate_qr_code(self):
         with redirect_stdout(StringIO()) as sout:
             command_line_parser(cmd_args=["-qr", "test"])
-        self.assertEqual(sout.getvalue(), "The qrcode file <test.png> was generated.\n")
+        self.assertEqual(
+            sout.getvalue(),
+            "The qrcode file <test.png> was generated.\n"
+        )
         self.assertTrue(os.path.exists("test.png"))
         with redirect_stdout(StringIO()) as sout:
             command_line_parser(cmd_args=["-a", "test.png", "test4"])
-        self.assertEqual(sout.getvalue(), "The service 'test4' was added, from file <test.png>.\n")
+        self.assertEqual(
+            sout.getvalue(),
+            "The service 'test4' was added, from file <test.png>.\n"
+        )
         with open(self.config_path, "r") as f:
             config_dict = json.load(f)
         self.assertTrue("test4" in config_dict.keys())
