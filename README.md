@@ -8,7 +8,7 @@ authentication without supporting application specific passwords or other forms 
 suitable for automation this python packages allows to generate two factor authentication codes on the commandline
 or in python.
 
-![Preview](pyauthenticator.gif) 
+![Preview of pyauthenticator](https://raw.githubusercontent.com/jan-janssen/pyauthenticator/main/pyauthenticator.gif) 
 
 # For Users 
 ## Installation
