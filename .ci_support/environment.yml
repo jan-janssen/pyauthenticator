@@ -3,7 +3,6 @@ channels:
 dependencies:
 - python
 - coverage
-- coveralls
 - qrcode=7.4.2
 - otpauth=2.0.0
 - pyzbar=0.1.9
