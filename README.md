@@ -10,19 +10,20 @@ or in python.
 
 ![Preview](pyauthenticator.gif) 
 
+# For Users 
 ## Installation
-Install via conda:
+Install `pyauthenticator` via conda:
 ```
 >>> conda install -c conda-forge pyauthenticator
 ```
 
-Install via pip:
+Alternatively, `pyauthenticator` can also be installed via pip:
 ```
 >>> pip install pyauthenticator
 ```
 
 ## Command Line
-Get help and a list of all available options:
+Get help how to use `pyauthenticator` using the `--help/-h` option:
 ```
 >>> pyauthenticator --help
 
@@ -39,14 +40,14 @@ options:
                      additional argument.
 ```
 
-Add `google` as new service after saving the qrcode to `Screenshot 2023-07-02 at 12.45.09.png`:
+Add `google` as new service after saving the qrcode to `Screenshot 2023-07-02 at 12.45.09.png` to your desktop:
 ```
 >>> pyauthenticator google --add ~/Desktop/Screenshot\ 2023-07-02\ at\ 12.45.09.png
 
 The service 'google' was added, from file </Users/jan/Desktop/Screenshot 2023-07-02 at 12.45.09.png>
 ```
 
-Afterwards new authentication codes can be generated for the service `google` using:
+Afterwards, new authentication codes can be generated for the service `google` using:
 ```
 >>> pyauthenticator google
 
@@ -54,12 +55,31 @@ Afterwards new authentication codes can be generated for the service `google` us
 ```
 Beyond google, `pyauthenticator` works for any service which implements the two factor authentication. 
 
+If you mistype the name of the service, then `pyauthenticator` suggests alternative options:
+```
+>>> pyauthenticator googel
+
+The service "googel" does not exist.
+
+The config file ~/.pyauthenticator contains the following services:
+  * google
+
+Choose one of these or add a new service using:
+  pyauthenticator --add <qr-code.png> <servicename>
+```
+
+## Support 
+For any support requests feel free to open an [issue on Github](https://github.com/jan-janssen/pyauthenticator/issues). 
+
+# For Developers 
 ## Python Interface
-The same functionality is available via the python interface:
+The same functionality which is available on the command line is also available via the python interface:
 ```
 from pyauthenticator import get_two_factor_code
 get_two_factor_code(service)
 ```
+So `pyauthenticator` can be integrated in existing python packages which need access to resources protected by two 
+factor authentication. 
 
 ## Configuration
 The configuration is stored in `~/.pyauthenticator` it is written in the JSON format. For a given service like `github`
@@ -68,3 +88,6 @@ the config file contains:
 {"google": "otpauth://totp/Google:<username>?secret=<secret>&issuer=Google"}
 ```
 With the Google username `<username>` and the corresponding secret `<secret>` being contained in the QR code.
+
+## License 
+The `pyauthenticator` package is licensed under the [BSD-3-Clause license](https://github.com/jan-janssen/pyauthenticator/blob/main/LICENSE). 
