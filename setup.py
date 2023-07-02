@@ -10,6 +10,7 @@ setup(
     version=versioneer.get_version(),
     description='Similar to the Google authenticator just written in python.',
     long_description=open('README.md').read(),
+    long_description_content_type="text/markdown",
     url='https://github.com/jan-janssen/pyauthenticator',
     author='Jan Janssen',
     author_email='jan.janssen@outlook.com',
