@@ -7,4 +7,4 @@ dependencies:
 - otpauth=2.0.0
 - pyzbar=0.1.9
 - zbar=0.10
-- pillow=9.5.0
+- pillow=10.0.0
