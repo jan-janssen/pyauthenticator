@@ -41,6 +41,10 @@ class ShareTest(unittest.TestCase):
         )
         self.assertDictEqual(test_no_dict, {})
         os.remove(test_file_name)
+        test_dict_reload = load_config(
+            config_file_to_load=test_file_name
+        )
+        self.assertDictEqual({}, test_dict_reload)
 
     def test_get_otpauth_dict(self):
         otpauth_str = "otpauth://totp/Test%3A%20root%40github.com?secret=MAGICSECRET&issuer=Test"
