@@ -18,7 +18,8 @@ class TestCore(unittest.TestCase):
     def setUpClass(cls):
         cls.qr_code_png = "test.png"
         cls.config_dict = {
-            "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test&period=60"
+            "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test&period=60",
+            "test2": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN"
         }
         generate_qrcode(
             key="test",
@@ -32,7 +33,7 @@ class TestCore(unittest.TestCase):
 
     def test_list_services(self):
         service_lst = list_services(config_dict=self.config_dict)
-        self.assertEqual(["test"], service_lst)
+        self.assertEqual(["test", "test2"], service_lst)
 
     def test_add_service(self):
         config_file = "test_config.json"
@@ -43,11 +44,13 @@ class TestCore(unittest.TestCase):
             config_file_to_write=config_file
         )
         config_reload = load_config(config_file_to_load=config_file)
-        self.assertDictEqual(config_reload, self.config_dict)
+        self.assertEqual(config_reload["test"], self.config_dict["test"])
         os.remove(config_file)
 
     def test_get_two_factor_code(self):
         code = get_two_factor_code(key="test", config_dict=self.config_dict)
+        self.assertEqual(len(code), 6)
+        code = get_two_factor_code(key="test2", config_dict=self.config_dict)
         self.assertEqual(len(code), 6)
 
 
