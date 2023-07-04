@@ -9,7 +9,7 @@ from pyauthenticator.share import (
     generate_qrcode,
     get_two_factor_code,
     list_services,
-    load_config
+    load_config,
 )
 
 
