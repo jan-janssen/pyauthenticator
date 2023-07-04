@@ -1,9 +1,9 @@
 """
 Setuptools based setup module
 """
-from setuptools import setup, find_packages
-import versioneer
+from setuptools import find_packages, setup
 
+import versioneer
 
 setup(
     name='pyauthenticator',
@@ -17,7 +17,7 @@ setup(
     license='BSD',
     packages=find_packages(exclude=["*tests*"]),
     install_requires=[
-        'otpauth==2.0.0',
+        'pyotp==2.6.0',
         'qrcode==7.4.2',
         'pyzbar==0.1.9',
         'pillow==10.0.0',

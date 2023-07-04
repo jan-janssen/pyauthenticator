@@ -1,11 +1,12 @@
-import unittest
+import json
 import os
 import subprocess
-import json
+import unittest
 from contextlib import redirect_stdout
 from io import StringIO
-from pyauthenticator.share import expand_path, write_config, config_file
+
 from pyauthenticator.__main__ import command_line_parser
+from pyauthenticator.share import config_file, expand_path, write_config
 
 
 class CmdSubprocessTest(unittest.TestCase):

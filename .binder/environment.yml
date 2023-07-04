@@ -3,7 +3,7 @@ channels:
 dependencies:
 - python
 - qrcode
-- otpauth
+- pyotp
 - pyzbar
 - zbar
 - pillow

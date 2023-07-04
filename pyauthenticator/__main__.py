@@ -3,12 +3,13 @@ Generate two factor authentication codes on the command line
 """
 import argparse
 import sys
+
 from pyauthenticator.share import (
+    add_service,
+    generate_qrcode,
+    get_two_factor_code,
     list_services,
     load_config,
-    generate_qrcode,
-    add_service,
-    get_two_factor_code,
 )
 
 

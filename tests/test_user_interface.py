@@ -1,7 +1,8 @@
-import unittest
 import os
+import unittest
+
 from pyauthenticator import get_two_factor_code, write_qrcode_to_file
-from pyauthenticator.share import expand_path, write_config, config_file
+from pyauthenticator.share import config_file, expand_path, write_config
 
 
 class TestUserInterface(unittest.TestCase):
