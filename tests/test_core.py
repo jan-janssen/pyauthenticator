@@ -1,9 +1,16 @@
 """
 Test for core functionality
 """
-import unittest
-from pyauthenticator.share import list_services, load_config, generate_qrcode, add_service, get_two_factor_code
 import os
+import unittest
+
+from pyauthenticator.share import (
+    add_service,
+    generate_qrcode,
+    get_two_factor_code,
+    list_services,
+    load_config
+)
 
 
 class TestCore(unittest.TestCase):

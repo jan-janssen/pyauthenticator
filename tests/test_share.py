@@ -1,15 +1,16 @@
 """
 Test for shared functionality
 """
-import unittest
 import os
-from pyauthenticator.share import \
-    expand_path, \
-    load_config, \
-    write_config, \
-    get_otpauth_dict, \
-    add_padding, \
-    check_if_key_in_config
+import unittest
+
+from pyauthenticator.share import (
+    check_if_key_in_config,
+    expand_path,
+    get_otpauth_dict,
+    load_config,
+    write_config
+)
 
 
 class ShareTest(unittest.TestCase):
@@ -51,30 +52,6 @@ class ShareTest(unittest.TestCase):
             'issuer': 'Test'
         }
         self.assertDictEqual(otpauth_dict, otp_test_dict)
-
-    def test_add_padding(self):
-        main_str = "1234"
-        padding_str = "0"
-        str_pad_0 = add_padding(
-            main_str=main_str,
-            padding_str=padding_str,
-            padding_length=5
-        )
-        str_pad_1 = add_padding(
-            main_str=main_str,
-            padding_str=padding_str,
-            padding_length=6,
-            inverse_padding=True
-        )
-        str_pad_2 = add_padding(
-            main_str=main_str,
-            padding_str=padding_str,
-            padding_length=7,
-            inverse_padding=False
-        )
-        self.assertEqual("12340", str_pad_0)
-        self.assertEqual("001234", str_pad_1)
-        self.assertEqual("1234000", str_pad_2)
 
     def test_check_if_key_in_config(self):
         test_dict = {"key": "value"}

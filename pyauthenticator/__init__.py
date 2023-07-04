@@ -1,11 +1,10 @@
 """
 Generate two factor authentication codes on the command line
 """
-from pyauthenticator.share import (
-    load_config,
-    generate_qrcode,
-    get_two_factor_code as get_two_factor_code_internal,
-)
+from pyauthenticator.share import generate_qrcode
+from pyauthenticator.share import \
+    get_two_factor_code as get_two_factor_code_internal
+from pyauthenticator.share import load_config
 
 
 def write_qrcode_to_file(service, file_name=None):

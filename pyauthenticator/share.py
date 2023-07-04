@@ -1,14 +1,14 @@
 """
 Shared functionality to generate two factor authentication codes
 """
-import base64
 import json
 import os
-import otpauth
+from inspect import signature
+
+import pyotp
+import qrcode
 from PIL import Image
 from pyzbar.pyzbar import decode
-import qrcode
-
 
 # default configuration file
 config_file = "~/.pyauthenticator"
@@ -75,28 +75,6 @@ def get_otpauth_dict(otpauth_str):
     }
 
 
-def add_padding(main_str, padding_str, padding_length, inverse_padding=False):
-    """
-    Add padding to a string either in the beginning or at the end
-
-    Args:
-        main_str (str): string to add padding to
-        padding_str (str): padding character as string
-        padding_length (int): the length of the final string should be a multiple of the padding length
-        inverse_padding (bool): add padding in the beginning rather than the end
-
-    Returns:
-        str: resulting string with padding
-    """
-    missing_padding = len(main_str) % padding_length
-    if missing_padding:
-        if inverse_padding:
-            main_str = padding_str * (padding_length - missing_padding) + main_str
-        else:
-            main_str += padding_str * (padding_length - missing_padding)
-    return main_str
-
-
 def check_if_key_in_config(key, config_dict):
     """
     Check if a given key is included in a dictionary, raise an ValueError if it is not.
@@ -122,37 +100,25 @@ def get_two_factor_code(key, config_dict):
     """
     check_if_key_in_config(key=key, config_dict=config_dict)
     decode_dict_internal = get_otpauth_dict(otpauth_str=config_dict[key])
-    if "period" in decode_dict_internal.keys():
-        totp = otpauth.TOTP(
-            secret=base64.b32decode(
-                add_padding(
-                    main_str=decode_dict_internal["secret"],
-                    padding_str="=",
-                    padding_length=8,
-                    inverse_padding=False,
-                ),
-                True,
-            ),
-            period=int(decode_dict_internal["period"]),
-        )
+    funct_sig = signature(pyotp.TOTP)
+    if "digits" in decode_dict_internal.keys():
+        digits = int(decode_dict_internal["digits"])
     else:
-        totp = otpauth.TOTP(
-            secret=base64.b32decode(
-                add_padding(
-                    main_str=decode_dict_internal["secret"],
-                    padding_str="=",
-                    padding_length=8,
-                    inverse_padding=False,
-                ),
-                True,
-            ),
-        )
-    return add_padding(
-        main_str=str(totp.string_code(totp.generate())),
-        padding_str="0",
-        padding_length=6,
-        inverse_padding=True,
-    )
+        digits = funct_sig.parameters["digits"].default
+    if "period" in decode_dict_internal.keys():
+        interval = int(decode_dict_internal["period"])
+    else:
+        interval = funct_sig.parameters["interval"].default
+    if "issuer" in decode_dict_internal.keys():
+        issuer = decode_dict_internal["issuer"]
+    else:
+        issuer = funct_sig.parameters["issuer"].default
+    return pyotp.TOTP(
+        s=decode_dict_internal["secret"],
+        digits=digits,
+        issuer=issuer,
+        interval=interval,
+    ).now()
 
 
 def add_service(
