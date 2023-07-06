@@ -17,7 +17,7 @@ setup(
     license='BSD',
     packages=find_packages(exclude=["*tests*"]),
     install_requires=[
-        'pyotp==2.6.0',
+        'pyotp==2.8.0',
         'qrcode==7.4.2',
         'pyzbar==0.1.9',
         'pillow==10.0.0',
