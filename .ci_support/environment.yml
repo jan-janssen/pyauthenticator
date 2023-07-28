@@ -4,7 +4,7 @@ dependencies:
 - python
 - coverage
 - qrcode=7.4.2
-- pyotp=2.8.0
+- pyotp=2.9.0
 - pyzbar=0.1.9
 - zbar=0.10
 - pillow=10.0.0
