@@ -1,6 +1,7 @@
 """
 Generate two factor authentication codes on the command line
 """
+
 import argparse
 import sys
 

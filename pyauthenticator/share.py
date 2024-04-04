@@ -1,6 +1,7 @@
 """
 Shared functionality to generate two factor authentication codes
 """
+
 import json
 import os
 from inspect import signature
