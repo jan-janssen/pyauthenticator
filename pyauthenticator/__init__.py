@@ -1,6 +1,7 @@
 """
 Generate two factor authentication codes on the command line
 """
+
 from pyauthenticator.share import generate_qrcode
 from pyauthenticator.share import get_two_factor_code as get_two_factor_code_internal
 from pyauthenticator.share import load_config
