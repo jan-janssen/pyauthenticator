@@ -18,7 +18,7 @@ setup(
     packages=find_packages(exclude=["*tests*"]),
     install_requires=[
         'pyotp==2.9.0',
-        'qrcode==7.4.2',
+        'qrcode==8.0',
         'pyzbar==0.1.9',
         'pillow==10.4.0',
     ],
