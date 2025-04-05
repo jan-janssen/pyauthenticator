@@ -3,7 +3,7 @@ channels:
 dependencies:
 - python
 - coverage
-- qrcode=8.0
+- qrcode=8.1
 - pyotp=2.9.0
 - pyzbar=0.1.9
 - zbar=0.10
