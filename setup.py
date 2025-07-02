@@ -20,7 +20,7 @@ setup(
         'pyotp==2.9.0',
         'qrcode==8.2',
         'pyzbar==0.1.9',
-        'pillow==11.2.1',
+        'pillow==11.3.0',
     ],
     cmdclass=versioneer.get_cmdclass(),
     entry_points={
