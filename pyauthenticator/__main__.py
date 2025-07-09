@@ -4,6 +4,7 @@ Generate two factor authentication codes on the command line
 
 import argparse
 import sys
+from typing import Optional, Sequence
 
 from pyauthenticator.share import (
     add_service,
@@ -14,7 +15,7 @@ from pyauthenticator.share import (
 )
 
 
-def command_line_parser(cmd_args=None):
+def command_line_parser(cmd_args: Optional[Sequence[str]] = None) -> None:
     """
     Main function primarly used for the command line interface
     """

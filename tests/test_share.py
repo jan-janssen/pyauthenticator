@@ -3,6 +3,7 @@ Test for shared functionality
 """
 import os
 import unittest
+from typing import Dict
 
 from pyauthenticator.share import (
     check_if_key_in_config,
@@ -27,7 +28,7 @@ class ShareTest(unittest.TestCase):
 
     def test_config(self):
         test_file_name = "test.json"
-        test_dict = {"key": "value"}
+        test_dict: Dict[str, str] = {"key": "value"}
         write_config(
             config_dict=test_dict,
             config_file_to_write=test_file_name
@@ -51,14 +52,14 @@ class ShareTest(unittest.TestCase):
         otpauth_dict = get_otpauth_dict(
             otpauth_str=otpauth_str
         )
-        otp_test_dict = {
+        otp_test_dict: Dict[str, str] = {
             'secret': 'MAGICSECRET',
             'issuer': 'Test'
         }
         self.assertDictEqual(otpauth_dict, otp_test_dict)
 
     def test_check_if_key_in_config(self):
-        test_dict = {"key": "value"}
+        test_dict: Dict[str, str] = {"key": "value"}
         check_if_key_in_config(
             key="key",
             config_dict=test_dict
