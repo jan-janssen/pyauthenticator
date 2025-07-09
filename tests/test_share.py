@@ -3,7 +3,7 @@ Test for shared functionality
 """
 import os
 import unittest
-from typing import Any, Dict
+from typing import Dict
 
 from pyauthenticator.share import (
     check_if_key_in_config,
