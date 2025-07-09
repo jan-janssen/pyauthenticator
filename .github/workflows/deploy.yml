@@ -25,8 +25,7 @@ jobs:
         environment-file: .ci_support/environment.yml
     - name: Convert dependencies
       run: |
-        cp .ci_support/environment-old.yml environment.yml
-        python .ci_support/release.py; cat pyproject.toml
+        sed -i 's/==/>=/g' pyproject.toml; cat pyproject.toml
         git update-index --assume-unchanged pyproject.toml pyauthenticator/_version.py
     - name: Build
       shell: bash -l {0}
