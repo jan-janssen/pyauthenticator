@@ -15,7 +15,7 @@ from pyauthenticator.share import (
 
 
 class ShareTest(unittest.TestCase):
-    def test_expand_path(self) -> None:
+    def test_expand_path(self):
         test_path = "~/.pyauthenticator"
         self.assertEqual(
             expand_path(path=test_path),
@@ -26,7 +26,7 @@ class ShareTest(unittest.TestCase):
             )
         )
 
-    def test_config(self) -> None:
+    def test_config(self):
         test_file_name = "test.json"
         test_dict: Dict[str, str] = {"key": "value"}
         write_config(
@@ -47,7 +47,7 @@ class ShareTest(unittest.TestCase):
         )
         self.assertDictEqual({}, test_dict_reload)
 
-    def test_get_otpauth_dict(self) -> None:
+    def test_get_otpauth_dict(self):
         otpauth_str = "otpauth://totp/Test%3A%20root%40github.com?secret=MAGICSECRET&issuer=Test"
         otpauth_dict = get_otpauth_dict(
             otpauth_str=otpauth_str
@@ -58,7 +58,7 @@ class ShareTest(unittest.TestCase):
         }
         self.assertDictEqual(otpauth_dict, otp_test_dict)
 
-    def test_check_if_key_in_config(self) -> None:
+    def test_check_if_key_in_config(self):
         test_dict: Dict[str, str] = {"key": "value"}
         check_if_key_in_config(
             key="key",
