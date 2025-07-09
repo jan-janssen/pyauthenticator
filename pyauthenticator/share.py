@@ -7,10 +7,10 @@ import os
 from inspect import signature
 from typing import Any, Dict, List, Optional
 
-import pyotp  # type: ignore
-import qrcode  # type: ignore
-from PIL import Image  # type: ignore
-from pyzbar.pyzbar import decode  # type: ignore
+import pyotp
+import qrcode
+from PIL import Image
+from pyzbar.pyzbar import decode
 
 # default configuration file
 config_file: str = "~/.pyauthenticator"
