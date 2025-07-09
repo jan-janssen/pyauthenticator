@@ -1,5 +1,12 @@
 [build-system]
-requires = ["hatchling", "hatch-vcs"]
+requires = [
+    "hatchling==1.27.0",
+    "hatch-vcs==0.5.0",
+    "pyotp==2.9.0",
+    "qrcode==8.2",
+    "pyzbar==0.1.9",
+    "pillow==11.3.0",
+]
 build-backend = "hatchling.build"
 
 [project]
@@ -24,12 +31,14 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Security",
     "Topic :: Utilities",
 ]
 dependencies = [
     "pyotp==2.9.0",
-    "qrcode==8.2", # Corrected version to a more standard format, assuming it meant qrcode
+    "qrcode==8.2",
     "pyzbar==0.1.9",
     "pillow==11.3.0",
 ]
@@ -43,28 +52,24 @@ Tracker = "https://github.com/jan-janssen/pyauthenticator/issues"
 [project.scripts]
 pyauthenticator = "pyauthenticator.__main__:command_line_parser"
 
-[tool.hatch.version]
-source = "vcs"
+[tool.hatch.build]
+include = [
+    "pyauthenticator"
+]
 
 [tool.hatch.build.hooks.vcs]
 version-file = "pyauthenticator/_version.py"
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "/pyauthenticator",
-    "/tests",
-    "/*.md",
-    "/LICENSE",
-    "/.coveragerc",
-    "/.coveralls.yml",
+    "pyauthenticator"
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["pyauthenticator"]
+packages = [
+    "pyauthenticator"
+]
 
-[tool.versioneer]
-VCS = "git"
-style = "pep440-pre"
-versionfile_source = "pyauthenticator/_version.py"
-tag_prefix = "pyauthenticator-"
-parentdir_prefix = "pyauthenticator-"
+[tool.hatch.version]
+source = "vcs"
+path = "pyauthenticator/_version.py"
