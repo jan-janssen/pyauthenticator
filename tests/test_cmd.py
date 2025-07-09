@@ -11,11 +11,8 @@ from pyauthenticator.share import config_file, expand_path, write_config
 
 
 class CmdSubprocessTest(unittest.TestCase):
-    config_dict: Dict[str, str]
-    config_path: str
-
     @classmethod
-    def setUpClass(cls) -> None:
+    def setUpClass(cls):
         cls.config_dict = {
             "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test"
         }
@@ -25,14 +22,14 @@ class CmdSubprocessTest(unittest.TestCase):
                 config_dict=cls.config_dict
             )
 
-    def test_main_generate_two_factor(self) -> None:
+    def test_main_generate_two_factor(self):
         code = subprocess.check_output(
             ["coverage", "run", "-a", "pyauthenticator", "test"],
             universal_newlines=True
         )
         self.assertEqual(len(code.replace("\n", "")), 6)
 
-    def test_main_generate_qr_code(self) -> None:
+    def test_main_generate_qr_code(self):
         subprocess.check_output(
             ["coverage", "run", "-a", "pyauthenticator", "-qr", "test"],
             universal_newlines=True
@@ -48,11 +45,8 @@ class CmdSubprocessTest(unittest.TestCase):
 
 
 class CmdParserTest(unittest.TestCase):
-    config_dict: Dict[str, str]
-    config_path: str
-
     @classmethod
-    def setUpClass(cls) -> None:
+    def setUpClass(cls):
         cls.config_dict = {
             "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test"
         }
@@ -62,7 +56,7 @@ class CmdParserTest(unittest.TestCase):
                 config_dict=cls.config_dict
             )
 
-    def test_main_generate_two_factor(self) -> None:
+    def test_main_generate_two_factor(self):
         with redirect_stdout(StringIO()) as sout:
             command_line_parser(cmd_args=["test"])
         self.assertEqual(len(sout.getvalue().rstrip('\n')), 6)
@@ -73,7 +67,7 @@ class CmdParserTest(unittest.TestCase):
             "The service \"test3\" does not exist."
         )
 
-    def test_main_generate_qr_code(self) -> None:
+    def test_main_generate_qr_code(self):
         with redirect_stdout(StringIO()) as sout:
             command_line_parser(cmd_args=["-qr", "test"])
         self.assertEqual(
