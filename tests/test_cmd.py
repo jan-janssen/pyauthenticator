@@ -4,7 +4,6 @@ import subprocess
 import unittest
 from contextlib import redirect_stdout
 from io import StringIO
-from typing import Any, Dict
 
 from pyauthenticator.__main__ import command_line_parser
 from pyauthenticator.share import config_file, expand_path, write_config
