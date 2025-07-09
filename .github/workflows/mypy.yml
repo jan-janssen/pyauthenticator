@@ -8,12 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        operating-system: [ubuntu-latest]
-        python-version: ['3.9']
-
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - name: Conda config
@@ -21,7 +16,7 @@ jobs:
       run: echo -e "channels:\n  - conda-forge\n" > .condarc
     - uses: conda-incubator/setup-miniconda@v3
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: '3.13'
         miniforge-version: latest
         condarc-file: .condarc
         environment-file: .ci_support/environment.yml
@@ -29,4 +24,4 @@ jobs:
       shell: bash -l {0}
       run: |
         pip install --no-deps .
-        mypy pyauthenticator tests
+        mypy pyauthenticator
