@@ -3,7 +3,6 @@ Test for core functionality
 """
 import os
 import unittest
-from typing import Dict
 
 from pyauthenticator.share import (
     add_service,
@@ -15,11 +14,8 @@ from pyauthenticator.share import (
 
 
 class TestCore(unittest.TestCase):
-    qr_code_png: str
-    config_dict: Dict[str, str]
-
     @classmethod
-    def setUpClass(cls) -> None:
+    def setUpClass(cls):
         cls.qr_code_png = "test.png"
         cls.config_dict = {
             "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test&period=60&digits=6",
@@ -32,14 +28,14 @@ class TestCore(unittest.TestCase):
         )
 
     @classmethod
-    def tearDownClass(cls) -> None:
+    def tearDownClass(cls):
         os.remove(cls.qr_code_png)
 
-    def test_list_services(self) -> None:
+    def test_list_services(self):
         service_lst = list_services(config_dict=self.config_dict)
         self.assertEqual(["test", "test2"], service_lst)
 
-    def test_add_service(self) -> None:
+    def test_add_service(self):
         config_file = "test_config.json"
         add_service(
             key="test",
@@ -51,7 +47,7 @@ class TestCore(unittest.TestCase):
         self.assertEqual(config_reload["test"], self.config_dict["test"])
         os.remove(config_file)
 
-    def test_get_two_factor_code(self) -> None:
+    def test_get_two_factor_code(self):
         code = get_two_factor_code(key="test", config_dict=self.config_dict)
         self.assertEqual(len(code), 6)
         code = get_two_factor_code(key="test2", config_dict=self.config_dict)
