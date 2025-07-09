@@ -74,7 +74,7 @@ For any support requests feel free to open an [issue on Github](https://github.c
 # For Developers 
 ## Python Interface
 The same functionality which is available on the command line is also available via the python interface:
-```
+```python
 from pyauthenticator import get_two_factor_code
 get_two_factor_code(service)
 ```
@@ -84,7 +84,7 @@ factor authentication.
 ## Configuration
 The configuration is stored in `~/.pyauthenticator` it is written in the JSON format. For a given service like `github`
 the config file contains:
-```
+```JSON
 {"google": "otpauth://totp/Google:<username>?secret=<secret>&issuer=Google"}
 ```
 With the Google username `<username>` and the corresponding secret `<secret>` being contained in the QR code.
