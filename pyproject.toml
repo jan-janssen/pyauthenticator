@@ -6,6 +6,8 @@ requires = [
     "qrcode==8.2",
     "pyzbar==0.1.9",
     "pillow==11.3.0",
+    "mypy",
+    "types-qrcode",
 ]
 build-backend = "hatchling.build"
 

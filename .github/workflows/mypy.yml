@@ -1,0 +1,32 @@
+name: MyPy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        python-version: ['3.9']
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Conda config
+      shell: bash -l {0}
+      run: echo -e "channels:\n  - conda-forge\n" > .condarc
+    - uses: conda-incubator/setup-miniconda@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+        miniforge-version: latest
+        condarc-file: .condarc
+        environment-file: .ci_support/environment.yml
+    - name: MyPy
+      shell: bash -l {0}
+      run: |
+        pip install --no-deps .
+        mypy pyauthenticator tests

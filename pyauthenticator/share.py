@@ -5,17 +5,18 @@ Shared functionality to generate two factor authentication codes
 import json
 import os
 from inspect import signature
+from typing import Any, Dict, List, Optional
 
-import pyotp
-import qrcode
-from PIL import Image
-from pyzbar.pyzbar import decode
+import pyotp  # type: ignore
+import qrcode  # type: ignore
+from PIL import Image  # type: ignore
+from pyzbar.pyzbar import decode  # type: ignore
 
 # default configuration file
-config_file = "~/.pyauthenticator"
+config_file: str = "~/.pyauthenticator"
 
 
-def expand_path(path):
+def expand_path(path: str) -> str:
     """
     Expand path by expanding the user variable and converting the path to an absolute path
 
@@ -28,7 +29,7 @@ def expand_path(path):
     return os.path.abspath(os.path.expanduser(path))
 
 
-def load_config(config_file_to_load=config_file):
+def load_config(config_file_to_load: str = config_file) -> Dict[str, Any]:
     """
     Load configuration file
 
@@ -46,7 +47,7 @@ def load_config(config_file_to_load=config_file):
         return {}
 
 
-def write_config(config_dict, config_file_to_write=config_file):
+def write_config(config_dict: Dict[str, Any], config_file_to_write: str = config_file) -> None:
     """
     Write configuration file
 
@@ -58,7 +59,7 @@ def write_config(config_dict, config_file_to_write=config_file):
         json.dump(config_dict, f)
 
 
-def get_otpauth_dict(otpauth_str):
+def get_otpauth_dict(otpauth_str: str) -> Dict[str, str]:
     """
     Parse otpauth url
 
@@ -76,7 +77,7 @@ def get_otpauth_dict(otpauth_str):
     }
 
 
-def check_if_key_in_config(key, config_dict):
+def check_if_key_in_config(key: str, config_dict: Dict[str, Any]) -> None:
     """
     Check if a given key is included in a dictionary, raise an ValueError if it is not.
 
@@ -88,7 +89,7 @@ def check_if_key_in_config(key, config_dict):
         raise ValueError()
 
 
-def get_two_factor_code(key, config_dict):
+def get_two_factor_code(key: str, config_dict: Dict[str, Any]) -> str:
     """
     Generate the two factor authentication code
 
@@ -123,8 +124,11 @@ def get_two_factor_code(key, config_dict):
 
 
 def add_service(
-    key, qrcode_png_file_name, config_dict, config_file_to_write=config_file
-):
+    key: str,
+    qrcode_png_file_name: str,
+    config_dict: Dict[str, Any],
+    config_file_to_write: str = config_file,
+) -> None:
     """
     Add new service to configuration file
 
@@ -139,7 +143,9 @@ def add_service(
     write_config(config_dict=config_dict, config_file_to_write=config_file_to_write)
 
 
-def generate_qrcode(key, config_dict, file_name=None):
+def generate_qrcode(
+    key: str, config_dict: Dict[str, Any], file_name: Optional[str] = None
+) -> None:
     """
     Write qrcode to file to scan it with a mobile application
 
@@ -154,7 +160,7 @@ def generate_qrcode(key, config_dict, file_name=None):
     qrcode.make(config_dict[key]).save(file_name, "PNG")
 
 
-def list_services(config_dict):
+def list_services(config_dict: Dict[str, Any]) -> List[str]:
     """
     List available services
 

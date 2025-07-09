@@ -10,3 +10,5 @@ dependencies:
 - pyzbar=0.1.9
 - zbar=0.10
 - pillow=11.3.0
+- mypy
+- types-qrcode
