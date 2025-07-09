@@ -47,7 +47,9 @@ def load_config(config_file_to_load: str = config_file) -> Dict[str, Any]:
         return {}
 
 
-def write_config(config_dict: Dict[str, Any], config_file_to_write: str = config_file) -> None:
+def write_config(
+    config_dict: Dict[str, Any], config_file_to_write: str = config_file
+) -> None:
     """
     Write configuration file
 
