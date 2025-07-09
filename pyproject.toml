@@ -1,0 +1,70 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pyauthenticator"
+dynamic = ["version"]
+description = "Similar to the Google authenticator just written in python."
+readme = "README.md"
+requires-python = ">=3.7"
+license = { text = "BSD-3-Clause" }
+authors = [
+    { name = "Jan Janssen", email = "jan.janssen@outlook.com" },
+]
+keywords = ["authenticator", "2FA", "MFA"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Security",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "pyotp==2.9.0",
+    "qrcode==8.2", # Corrected version to a more standard format, assuming it meant qrcode
+    "pyzbar==0.1.9",
+    "pillow==11.3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/jan-janssen/pyauthenticator"
+Documentation = "https://github.com/jan-janssen/pyauthenticator/blob/master/README.md"
+Source = "https://github.com/jan-janssen/pyauthenticator"
+Tracker = "https://github.com/jan-janssen/pyauthenticator/issues"
+
+[project.scripts]
+pyauthenticator = "pyauthenticator.__main__:command_line_parser"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "pyauthenticator/_version.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/pyauthenticator",
+    "/tests",
+    "/*.md",
+    "/LICENSE",
+    "/.coveragerc",
+    "/.coveralls.yml",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["pyauthenticator"]
+
+[tool.versioneer]
+VCS = "git"
+style = "pep440-pre"
+versionfile_source = "pyauthenticator/_version.py"
+tag_prefix = "pyauthenticator-"
+parentdir_prefix = "pyauthenticator-"
