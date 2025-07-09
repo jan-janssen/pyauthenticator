@@ -1,5 +1,5 @@
 # pyauthenticator
-[![Python package](https://github.com/jan-janssen/pyauthenticator/actions/workflows/unittest.yml/badge.svg?branch=main)](https://github.com/jan-janssen/pyauthenticator/actions/workflows/unittest.yml)
+[![Pipeline](https://github.com/jan-janssen/pyauthenticator/actions/workflows/pipeline.yml/badge.svg)](https://github.com/jan-janssen/pyauthenticator/actions/workflows/pipeline.yml)
 [![Coverage Status](https://coveralls.io/repos/github/jan-janssen/pyauthenticator/badge.svg?branch=main)](https://coveralls.io/github/jan-janssen/pyauthenticator?branch=main)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
