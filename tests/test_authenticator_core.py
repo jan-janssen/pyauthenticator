@@ -3,9 +3,7 @@ Tests for the pyauthenticator.core module
 """
 import unittest
 import os
-import qrcode
-from PIL import Image
-from pyauthenticator.core import decode_qrcode, encode_qrcode, get_totp
+from pyauthenticator._core import decode_qrcode, encode_qrcode, get_totp
 
 class TestAuthenticatorCore(unittest.TestCase):
     """

@@ -3,7 +3,7 @@ Tests for the pyauthenticator.config module
 """
 import unittest
 import os
-from pyauthenticator.config import load_config, write_config, get_otpauth_dict
+from pyauthenticator._config import load_config, write_config, get_otpauth_dict
 
 class TestConfig(unittest.TestCase):
     """
