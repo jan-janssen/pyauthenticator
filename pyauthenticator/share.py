@@ -4,11 +4,7 @@ Shared functionality to generate two factor authentication codes
 
 from typing import Any, Dict, List, Optional
 
-import pyotp
-import qrcode
-from PIL import Image
-from pyzbar.pyzbar import decode
-
+from pyauthenticator.core import decode_qrcode, encode_qrcode, get_totp
 from pyauthenticator.config import default_config_file, get_otpauth_dict, write_config
 
 
@@ -24,18 +20,7 @@ def get_two_factor_code(key: str, config_dict: Dict[str, Any]) -> str:
         str: two factor authentication code as string
     """
     _check_if_key_in_config(key=key, config_dict=config_dict)
-    decode_dict_internal = get_otpauth_dict(otpauth_str=config_dict[key])
-    kwargs: dict[str, Any] = {}
-    if "digits" in decode_dict_internal.keys():
-        kwargs["digits"] = int(decode_dict_internal["digits"])
-    if "period" in decode_dict_internal.keys():
-        kwargs["interval"] = int(decode_dict_internal["period"])
-    if "issuer" in decode_dict_internal.keys():
-        kwargs["issuer"] = decode_dict_internal["issuer"]
-    return pyotp.TOTP(
-        **kwargs,
-        s=decode_dict_internal["secret"],
-    ).now()
+    return get_totp(otpauth_dict=get_otpauth_dict(otpauth_str=config_dict[key]))
 
 
 def add_service(
@@ -53,8 +38,7 @@ def add_service(
         config_dict (dict): configuration dictionary
         config_file_to_write (str): path to config file
     """
-    otpauth_str = decode(Image.open(qrcode_png_file_name))[0].data.decode("utf-8")
-    config_dict[key] = otpauth_str
+    config_dict[key] = decode_qrcode(qrcode_png_file_name=qrcode_png_file_name)
     write_config(config_dict=config_dict, config_file_to_write=config_file_to_write)
 
 
@@ -72,7 +56,7 @@ def generate_qrcode(
     if file_name is None:
         file_name = key + ".png"
     _check_if_key_in_config(key=key, config_dict=config_dict)
-    qrcode.make(config_dict[key]).save(file_name, "PNG")
+    encode_qrcode(otpauth_str=config_dict[key], file_name=file_name)
 
 
 def list_services(config_dict: Dict[str, Any]) -> List[str]:
