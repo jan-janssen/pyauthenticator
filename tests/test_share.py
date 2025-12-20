@@ -5,27 +5,17 @@ import os
 import unittest
 from typing import Dict
 
-from pyauthenticator.share import (
-    check_if_key_in_config,
-    expand_path,
+from pyauthenticator.config import (
     get_otpauth_dict,
     load_config,
-    write_config
+    write_config,
+)
+from pyauthenticator.share import (
+    _check_if_key_in_config,
 )
 
 
 class ShareTest(unittest.TestCase):
-    def test_expand_path(self):
-        test_path = "~/.pyauthenticator"
-        self.assertEqual(
-            expand_path(path=test_path),
-            os.path.abspath(
-                os.path.expanduser(
-                    test_path
-                )
-            )
-        )
-
     def test_config(self):
         test_file_name = "test.json"
         test_dict: Dict[str, str] = {"key": "value"}
@@ -60,12 +50,12 @@ class ShareTest(unittest.TestCase):
 
     def test_check_if_key_in_config(self):
         test_dict: Dict[str, str] = {"key": "value"}
-        check_if_key_in_config(
+        _check_if_key_in_config(
             key="key",
             config_dict=test_dict
         )
         with self.assertRaises(ValueError):
-            check_if_key_in_config(
+            _check_if_key_in_config(
                 key="secret",
                 config_dict=test_dict
             )

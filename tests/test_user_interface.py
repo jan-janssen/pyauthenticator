@@ -2,7 +2,7 @@ import os
 import unittest
 
 from pyauthenticator import get_two_factor_code, write_qrcode_to_file
-from pyauthenticator.share import config_file, expand_path, write_config
+from pyauthenticator.config import default_config_file, write_config
 
 
 class TestUserInterface(unittest.TestCase):
@@ -11,7 +11,7 @@ class TestUserInterface(unittest.TestCase):
         cls.config_dict = {
             "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test"
         }
-        cls.config_path = expand_path(config_file)
+        cls.config_path = os.path.abspath(os.path.expanduser(default_config_file))
         if not os.path.exists(cls.config_path):
             write_config(
                 config_dict=cls.config_dict

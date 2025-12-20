@@ -2,93 +2,10 @@
 Shared functionality to generate two factor authentication codes
 """
 
-import json
-import os
-from inspect import signature
 from typing import Any, Dict, List, Optional
 
-import pyotp
-import qrcode
-from PIL import Image
-from pyzbar.pyzbar import decode
-
-# default configuration file
-config_file: str = "~/.pyauthenticator"
-
-
-def expand_path(path: str) -> str:
-    """
-    Expand path by expanding the user variable and converting the path to an absolute path
-
-    Args:
-        path (str): path before expansion
-
-    Returns:
-        str: expanded path
-    """
-    return os.path.abspath(os.path.expanduser(path))
-
-
-def load_config(config_file_to_load: str = config_file) -> Dict[str, Any]:
-    """
-    Load configuration file
-
-    Args:
-        config_file_to_load (str): path to config file
-
-    Returns:
-        dict: Dictionary with service names as keys and the otpauth url as values
-    """
-    abs_config_path = expand_path(path=config_file_to_load)
-    if os.path.exists(abs_config_path):
-        with open(abs_config_path, "r") as f:
-            return json.load(f)
-    else:
-        return {}
-
-
-def write_config(
-    config_dict: Dict[str, Any], config_file_to_write: str = config_file
-) -> None:
-    """
-    Write configuration file
-
-    Args:
-        config_dict (dict): configuration dictionary
-        config_file_to_write (str): path to config file
-    """
-    with open(expand_path(path=config_file_to_write), "w") as f:
-        json.dump(config_dict, f)
-
-
-def get_otpauth_dict(otpauth_str: str) -> Dict[str, str]:
-    """
-    Parse otpauth url
-
-    Args:
-        otpauth_str (str): otpauth url as string
-
-    Returns:
-        dict: Dictionary with the parameters of the otpauth url as key-value pairs
-    """
-    return {
-        kv[0]: kv[1]
-        for kv in [
-            otpvar.split("=") for otpvar in otpauth_str.replace("?", "&").split("&")[1:]
-        ]
-    }
-
-
-def check_if_key_in_config(key: str, config_dict: Dict[str, Any]) -> None:
-    """
-    Check if a given key is included in a dictionary, raise an ValueError if it is not.
-
-    Args:
-        key (str): key as string
-        config_dict (dict): configuration dictionary
-    """
-    if key not in config_dict.keys():
-        raise ValueError()
+from pyauthenticator.core import decode_qrcode, encode_qrcode, get_totp
+from pyauthenticator.config import default_config_file, get_otpauth_dict, write_config
 
 
 def get_two_factor_code(key: str, config_dict: Dict[str, Any]) -> str:
@@ -102,34 +19,15 @@ def get_two_factor_code(key: str, config_dict: Dict[str, Any]) -> str:
     Returns:
         str: two factor authentication code as string
     """
-    check_if_key_in_config(key=key, config_dict=config_dict)
-    decode_dict_internal = get_otpauth_dict(otpauth_str=config_dict[key])
-    funct_sig = signature(pyotp.TOTP)
-    if "digits" in decode_dict_internal.keys():
-        digits = int(decode_dict_internal["digits"])
-    else:
-        digits = funct_sig.parameters["digits"].default
-    if "period" in decode_dict_internal.keys():
-        interval = int(decode_dict_internal["period"])
-    else:
-        interval = funct_sig.parameters["interval"].default
-    if "issuer" in decode_dict_internal.keys():
-        issuer = decode_dict_internal["issuer"]
-    else:
-        issuer = funct_sig.parameters["issuer"].default
-    return pyotp.TOTP(
-        s=decode_dict_internal["secret"],
-        digits=digits,
-        issuer=issuer,
-        interval=interval,
-    ).now()
+    _check_if_key_in_config(key=key, config_dict=config_dict)
+    return get_totp(otpauth_dict=get_otpauth_dict(otpauth_str=config_dict[key]))
 
 
 def add_service(
     key: str,
     qrcode_png_file_name: str,
     config_dict: Dict[str, Any],
-    config_file_to_write: str = config_file,
+    config_file_to_write: str = default_config_file,
 ) -> None:
     """
     Add new service to configuration file
@@ -140,8 +38,7 @@ def add_service(
         config_dict (dict): configuration dictionary
         config_file_to_write (str): path to config file
     """
-    otpauth_str = decode(Image.open(qrcode_png_file_name))[0].data.decode("utf-8")
-    config_dict[key] = otpauth_str
+    config_dict[key] = decode_qrcode(qrcode_png_file_name=qrcode_png_file_name)
     write_config(config_dict=config_dict, config_file_to_write=config_file_to_write)
 
 
@@ -158,8 +55,8 @@ def generate_qrcode(
     """
     if file_name is None:
         file_name = key + ".png"
-    check_if_key_in_config(key=key, config_dict=config_dict)
-    qrcode.make(config_dict[key]).save(file_name, "PNG")
+    _check_if_key_in_config(key=key, config_dict=config_dict)
+    encode_qrcode(otpauth_str=config_dict[key], file_name=file_name)
 
 
 def list_services(config_dict: Dict[str, Any]) -> List[str]:
@@ -173,3 +70,15 @@ def list_services(config_dict: Dict[str, Any]) -> List[str]:
         list: list of available services
     """
     return list(config_dict.keys())
+
+
+def _check_if_key_in_config(key: str, config_dict: Dict[str, Any]) -> None:
+    """
+    Check if a given key is included in a dictionary, raise an ValueError if it is not.
+
+    Args:
+        key (str): key as string
+        config_dict (dict): configuration dictionary
+    """
+    if key not in config_dict.keys():
+        raise ValueError()

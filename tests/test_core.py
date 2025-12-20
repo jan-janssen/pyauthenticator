@@ -4,12 +4,12 @@ Test for core functionality
 import os
 import unittest
 
+from pyauthenticator.config import load_config
 from pyauthenticator.share import (
     add_service,
     generate_qrcode,
     get_two_factor_code,
     list_services,
-    load_config
 )
 
 
