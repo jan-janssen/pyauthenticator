@@ -5,7 +5,12 @@ Generate two factor authentication codes on the command line
 from typing import Optional
 from . import _version
 from pyauthenticator._config import default_config_file, load_config
-from pyauthenticator.api import add_service, generate_qrcode, get_totp_for_key_in_dict, list_services
+from pyauthenticator.api import (
+    add_service,
+    generate_qrcode,
+    get_totp_for_key_in_dict,
+    list_services,
+)
 
 __version__: str = _version.__version__
 
@@ -46,8 +51,8 @@ def add_two_factor_provider(service: str, qrcode_png_file_name: str) -> None:
         qrcode_png_file_name (str): path to the png file which contains the qr code
     """
     add_service(
-        key=service, 
-        qrcode_png_file_name=qrcode_png_file_name, 
+        key=service,
+        qrcode_png_file_name=qrcode_png_file_name,
         config_dict=load_config(),
         config_file_to_write=default_config_file,
     )

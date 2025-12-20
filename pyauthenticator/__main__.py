@@ -50,7 +50,9 @@ def command_line_parser(cmd_args: Optional[Sequence[str]] = None) -> None:
         try:
             generate_qrcode(key=args.service, config_dict=config_dict)
         except KeyError:
-            _print_service_does_not_exists(config_dict=config_dict, service=args.service)
+            _print_service_does_not_exists(
+                config_dict=config_dict, service=args.service
+            )
         else:
             print("The qrcode file <" + args.service + ".png> was generated.")
     elif args.add:
@@ -68,7 +70,9 @@ def command_line_parser(cmd_args: Optional[Sequence[str]] = None) -> None:
         try:
             print(get_totp_for_key_in_dict(key=args.service, config_dict=config_dict))
         except KeyError:
-            _print_service_does_not_exists(config_dict=config_dict, service=args.service)
+            _print_service_does_not_exists(
+                config_dict=config_dict, service=args.service
+            )
 
 
 def _print_service_does_not_exists(config_dict: dict, service: str) -> None:
