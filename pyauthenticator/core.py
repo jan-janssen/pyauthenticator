@@ -13,7 +13,7 @@ from pyzbar.pyzbar import decode
 def decode_qrcode(qrcode_png_file_name: str) -> str:
     """
     Decode qrcode from png file
-    
+
     Args:
         qrcode_png_file_name (str): path to the png file which contains the qr code
 
@@ -23,7 +23,7 @@ def decode_qrcode(qrcode_png_file_name: str) -> str:
     return decode(Image.open(qrcode_png_file_name))[0].data.decode("utf-8")
 
 
-def encode_qrcode(otpauth_str: str, file_name) -> None:
+def encode_qrcode(otpauth_str: str, file_name: str) -> None:
     """
     Encode otpauth string into qrcode image saved as png file
 
@@ -37,7 +37,7 @@ def encode_qrcode(otpauth_str: str, file_name) -> None:
 def get_totp(otpauth_dict: dict[str, str]) -> str:
     """
     Get TOTP code for a specific service based on its otpauth dictionary
-    
+
     Args:
         otpauth_dict (dict[str, str]): for the service
 
