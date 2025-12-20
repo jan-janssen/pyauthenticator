@@ -5,13 +5,10 @@ import os
 import unittest
 from typing import Dict
 
-from pyauthenticator.config import (
+from pyauthenticator._config import (
     get_otpauth_dict,
     load_config,
     write_config,
-)
-from pyauthenticator.share import (
-    _check_if_key_in_config,
 )
 
 
@@ -47,18 +44,6 @@ class ShareTest(unittest.TestCase):
             'issuer': 'Test'
         }
         self.assertDictEqual(otpauth_dict, otp_test_dict)
-
-    def test_check_if_key_in_config(self):
-        test_dict: Dict[str, str] = {"key": "value"}
-        _check_if_key_in_config(
-            key="key",
-            config_dict=test_dict
-        )
-        with self.assertRaises(ValueError):
-            _check_if_key_in_config(
-                key="secret",
-                config_dict=test_dict
-            )
 
 
 if __name__ == '__main__':

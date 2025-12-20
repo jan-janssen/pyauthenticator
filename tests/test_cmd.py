@@ -6,7 +6,7 @@ from contextlib import redirect_stdout
 from io import StringIO
 
 from pyauthenticator.__main__ import command_line_parser
-from pyauthenticator.config import default_config_file, write_config
+from pyauthenticator._config import default_config_file, write_config
 
 
 class CmdSubprocessTest(unittest.TestCase):

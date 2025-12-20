@@ -4,11 +4,11 @@ Test for core functionality
 import os
 import unittest
 
-from pyauthenticator.config import load_config
-from pyauthenticator.share import (
+from pyauthenticator._config import load_config
+from pyauthenticator.api import (
     add_service,
     generate_qrcode,
-    get_two_factor_code,
+    get_totp_for_key_in_dict,
     list_services,
 )
 
@@ -48,9 +48,9 @@ class TestCore(unittest.TestCase):
         os.remove(config_file)
 
     def test_get_two_factor_code(self):
-        code = get_two_factor_code(key="test", config_dict=self.config_dict)
+        code = get_totp_for_key_in_dict(key="test", config_dict=self.config_dict)
         self.assertEqual(len(code), 6)
-        code = get_two_factor_code(key="test2", config_dict=self.config_dict)
+        code = get_totp_for_key_in_dict(key="test2", config_dict=self.config_dict)
         self.assertEqual(len(code), 6)
 
 
