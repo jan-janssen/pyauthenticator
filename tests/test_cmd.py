@@ -8,7 +8,7 @@ from contextlib import redirect_stdout
 from io import StringIO
 from unittest.mock import patch
 
-from pyauthenticator.__main__ import command_line_parser
+from pyauthenticator._cmd import command_line_parser
 from pyauthenticator._config import default_config_file, write_config
 
 
@@ -126,7 +126,7 @@ class CmdParserTest(unittest.TestCase):
         self.assertIn("does not exist", sout.getvalue())
 
 class EmptyConfigTest(unittest.TestCase):
-    @patch('pyauthenticator.__main__.load_config', return_value={})
+    @patch('pyauthenticator._cmd.load_config', return_value={})
     def test_no_services_message(self, mock_load_config):
         """
         Test the message when a service is provided but no services are configured.
@@ -135,7 +135,7 @@ class EmptyConfigTest(unittest.TestCase):
             command_line_parser(cmd_args=["some_service"])
         self.assertIn("The config file ~/.pyauthenticator does not contain any services.", sout.getvalue())
 
-    @patch('pyauthenticator.__main__.load_config', return_value={})
+    @patch('pyauthenticator._cmd.load_config', return_value={})
     def test_help_with_empty_config(self, mock_load_config):
         """
         Test help message when no services are configured.
