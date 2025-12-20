@@ -50,7 +50,7 @@ Source = "https://github.com/jan-janssen/pyauthenticator"
 Tracker = "https://github.com/jan-janssen/pyauthenticator/issues"
 
 [project.scripts]
-pyauthenticator = "pyauthenticator.__main__:command_line_parser"
+pyauthenticator = "pyauthenticator._cmd:command_line_parser"
 
 [tool.hatch.build]
 include = [
