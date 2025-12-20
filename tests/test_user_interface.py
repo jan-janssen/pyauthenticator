@@ -1,8 +1,9 @@
 import os
 import unittest
+import json
 
-from pyauthenticator import get_two_factor_code, write_qrcode_to_file
-from pyauthenticator.config import default_config_file, write_config
+from pyauthenticator import get_two_factor_code, write_qrcode_to_file, add_two_factor_provider, list_two_factor_providers
+from pyauthenticator._config import default_config_file, write_config, load_config
 
 
 class TestUserInterface(unittest.TestCase):
@@ -24,6 +25,32 @@ class TestUserInterface(unittest.TestCase):
     def test_write_qrcode_to_file(self):
         write_qrcode_to_file(service="test")
         self.assertTrue(os.path.exists("test.png"))
+
+    def test_add_and_list_providers(self):
+        """
+        Test adding and listing two-factor providers.
+        """
+        # Ensure the provider does not exist
+        providers = list_two_factor_providers()
+        self.assertNotIn("new_test_service", providers)
+
+        # Create a dummy qr code file
+        qr_code_file = "test_qr_add.png"
+        import qrcode
+        qrcode.make("otpauth://totp/Test?secret=JBSWY3DPEHPK3PXP&issuer=Test").save(qr_code_file, "PNG")
+
+        # Add the provider
+        add_two_factor_provider("new_test_service", qr_code_file)
+
+        # Check if the provider was added
+        providers = list_two_factor_providers()
+        self.assertIn("new_test_service", providers)
+
+        # Clean up the config file and the qr code file
+        config = load_config()
+        del config["new_test_service"]
+        write_config(config)
+        os.remove(qr_code_file)
 
 
 if __name__ == '__main__':

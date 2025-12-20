@@ -4,11 +4,11 @@ Shared functionality to generate two factor authentication codes
 
 from typing import Any, Dict, List, Optional
 
-from pyauthenticator.core import decode_qrcode, encode_qrcode, get_totp
-from pyauthenticator.config import default_config_file, get_otpauth_dict, write_config
+from pyauthenticator._core import decode_qrcode, encode_qrcode, get_totp
+from pyauthenticator._config import default_config_file, get_otpauth_dict, write_config
 
 
-def get_two_factor_code(key: str, config_dict: Dict[str, Any]) -> str:
+def get_totp_for_key_in_dict(key: str, config_dict: Dict[str, Any]) -> str:
     """
     Generate the two factor authentication code
 
@@ -19,7 +19,6 @@ def get_two_factor_code(key: str, config_dict: Dict[str, Any]) -> str:
     Returns:
         str: two factor authentication code as string
     """
-    _check_if_key_in_config(key=key, config_dict=config_dict)
     return get_totp(otpauth_dict=get_otpauth_dict(otpauth_str=config_dict[key]))
 
 
@@ -55,7 +54,6 @@ def generate_qrcode(
     """
     if file_name is None:
         file_name = key + ".png"
-    _check_if_key_in_config(key=key, config_dict=config_dict)
     encode_qrcode(otpauth_str=config_dict[key], file_name=file_name)
 
 
@@ -70,15 +68,3 @@ def list_services(config_dict: Dict[str, Any]) -> List[str]:
         list: list of available services
     """
     return list(config_dict.keys())
-
-
-def _check_if_key_in_config(key: str, config_dict: Dict[str, Any]) -> None:
-    """
-    Check if a given key is included in a dictionary, raise an ValueError if it is not.
-
-    Args:
-        key (str): key as string
-        config_dict (dict): configuration dictionary
-    """
-    if key not in config_dict.keys():
-        raise ValueError()
