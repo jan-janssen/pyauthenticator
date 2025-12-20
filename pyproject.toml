@@ -73,3 +73,7 @@ packages = [
 [tool.hatch.version]
 source = "vcs"
 path = "pyauthenticator/_version.py"
+
+[tool.coverage.run]
+omit = ["pyauthenticator/_version.py", "tests/*"]
+command_line = "-m unittest discover tests"

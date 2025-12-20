@@ -119,7 +119,7 @@ jobs:
       shell: bash -l {0}
       run: |
         pip install --no-deps .
-        coverage run -a -m unittest discover tests
+        coverage run
         coverage combine
         coverage xml
     - name: Coveralls
