@@ -3,7 +3,7 @@ Tests for the pyauthenticator.config module
 """
 import unittest
 import os
-from pyauthenticator._config import load_config, write_config, get_otpauth_dict
+from pyauthenticator._config import load_config, write_config
 
 class TestConfig(unittest.TestCase):
     """
@@ -32,10 +32,6 @@ class TestConfig(unittest.TestCase):
         loaded_data = load_config(self.config_file)
         self.assertEqual(loaded_data, self.config_data)
 
-    def test_get_otpauth_dict(self):
-        """
-        Test parsing an otpauth URL
-        """
-        otpauth_url = 'otpauth://totp/Test?secret=SECRET&issuer=Test'
-        expected_dict = {'secret': 'SECRET', 'issuer': 'Test'}
-        self.assertEqual(get_otpauth_dict(otpauth_url), expected_dict)
+
+if __name__ == '__main__':
+    unittest.main()

@@ -31,8 +31,7 @@ class TestAuthenticatorCore(unittest.TestCase):
         """
         Test generating a TOTP code
         """
-        otpauth_dict = {"secret": self.secret}
-        code = get_totp(otpauth_dict)
+        code = get_totp(otpauth_str=self.otpauth_str)
         self.assertTrue(code.isdigit())
         self.assertEqual(len(code), 6)
 
@@ -40,7 +39,7 @@ class TestAuthenticatorCore(unittest.TestCase):
         """
         Test generating a TOTP code with digits and period options
         """
-        otpauth_dict = {"secret": self.secret, "digits": "8", "period": "60", "issuer": "Test"}
-        code = get_totp(otpauth_dict)
+        otpauth_str = "otpauth://totp/Test?secret=JBSWY3DPEHPK3PXP&issuer=Test&digits=8&period=60"
+        code = get_totp(otpauth_str=otpauth_str)
         self.assertTrue(code.isdigit())
         self.assertEqual(len(code), 8)
