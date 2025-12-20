@@ -54,26 +54,26 @@ pyauthenticator = "pyauthenticator.__main__:command_line_parser"
 
 [tool.hatch.build]
 include = [
-    "pyauthenticator"
+    "src/pyauthenticator"
 ]
 
 [tool.hatch.build.hooks.vcs]
-version-file = "pyauthenticator/_version.py"
+version-file = "src/pyauthenticator/_version.py"
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "pyauthenticator"
+    "src/pyauthenticator"
 ]
 
 [tool.hatch.build.targets.wheel]
 packages = [
-    "pyauthenticator"
+    "src/pyauthenticator"
 ]
 
 [tool.hatch.version]
 source = "vcs"
-path = "pyauthenticator/_version.py"
+path = "src/pyauthenticator/_version.py"
 
 [tool.coverage.run]
-omit = ["pyauthenticator/_version.py", "tests/*"]
+source = ["pyauthenticator"]
 command_line = "-m unittest discover tests"
