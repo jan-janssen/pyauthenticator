@@ -1,57 +1,48 @@
 """
-Test for core functionality
+Tests for the pyauthenticator.core module
 """
-import os
 import unittest
+import os
+from pyauthenticator._core import decode_qrcode, encode_qrcode, get_totp
 
-from pyauthenticator._config import load_config
-from pyauthenticator.api import (
-    add_service,
-    generate_qrcode,
-    get_totp_for_key_in_dict,
-    list_services,
-)
+class TestAuthenticatorCore(unittest.TestCase):
+    """
+    Tests for the core module
+    """
+    def setUp(self):
+        self.otpauth_str = "otpauth://totp/Test?secret=JBSWY3DPEHPK3PXP&issuer=Test"
+        self.qr_code_file = "test_qr.png"
+        self.secret = "JBSWY3DPEHPK3PXP"
 
+    def tearDown(self):
+        if os.path.exists(self.qr_code_file):
+            os.remove(self.qr_code_file)
 
-class TestCore(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.qr_code_png = "test.png"
-        cls.config_dict = {
-            "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test&period=60&digits=6",
-            "test2": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN"
-        }
-        generate_qrcode(
-            key="test",
-            config_dict=cls.config_dict,
-            file_name=None
-        )
+    def test_encode_and_decode_qrcode(self):
+        """
+        Test encoding and decoding a QR code
+        """
+        encode_qrcode(self.otpauth_str, self.qr_code_file)
+        self.assertTrue(os.path.exists(self.qr_code_file))
+        decoded_str = decode_qrcode(self.qr_code_file)
+        self.assertEqual(decoded_str, self.otpauth_str)
 
-    @classmethod
-    def tearDownClass(cls):
-        os.remove(cls.qr_code_png)
-
-    def test_list_services(self):
-        service_lst = list_services(config_dict=self.config_dict)
-        self.assertEqual(["test", "test2"], service_lst)
-
-    def test_add_service(self):
-        config_file = "test_config.json"
-        add_service(
-            key="test",
-            qrcode_png_file_name=self.qr_code_png,
-            config_dict={},
-            config_file_to_write=config_file
-        )
-        config_reload = load_config(config_file_to_load=config_file)
-        self.assertEqual(config_reload["test"], self.config_dict["test"])
-        os.remove(config_file)
-
-    def test_get_two_factor_code(self):
-        code = get_totp_for_key_in_dict(key="test", config_dict=self.config_dict)
+    def test_get_totp(self):
+        """
+        Test generating a TOTP code
+        """
+        code = get_totp(otpauth_str=self.otpauth_str)
+        self.assertTrue(code.isdigit())
         self.assertEqual(len(code), 6)
-        code = get_totp_for_key_in_dict(key="test2", config_dict=self.config_dict)
-        self.assertEqual(len(code), 6)
+
+    def test_get_totp_with_options(self):
+        """
+        Test generating a TOTP code with digits and period options
+        """
+        otpauth_str = "otpauth://totp/Test?secret=JBSWY3DPEHPK3PXP&issuer=Test&digits=8&period=60"
+        code = get_totp(otpauth_str=otpauth_str)
+        self.assertTrue(code.isdigit())
+        self.assertEqual(len(code), 8)
 
 
 if __name__ == '__main__':

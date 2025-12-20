@@ -144,5 +144,6 @@ class EmptyConfigTest(unittest.TestCase):
              with redirect_stdout(StringIO()):
                 command_line_parser(cmd_args=["--help"])
 
+
 if __name__ == '__main__':
     unittest.main()

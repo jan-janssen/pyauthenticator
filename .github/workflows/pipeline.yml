@@ -119,8 +119,8 @@ jobs:
       shell: bash -l {0}
       run: |
         pip install --no-deps .
-        coverage run -a -m unittest discover tests
-        coverage combine
+        coverage run
+        coverage report
         coverage xml
     - name: Coveralls
       uses: coverallsapp/github-action@v2
