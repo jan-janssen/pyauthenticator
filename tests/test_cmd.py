@@ -8,7 +8,7 @@ from contextlib import redirect_stdout
 from io import StringIO
 from unittest.mock import patch
 
-from pyauthenticator.__main__ import command_line_parser
+from pyauthenticator._cmd import command_line_parser
 from pyauthenticator._config import default_config_file, write_config
 
 
