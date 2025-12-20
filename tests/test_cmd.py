@@ -27,7 +27,7 @@ class CmdSubprocessTest(unittest.TestCase):
     def test_main_generate_two_factor(self):
         try:
             code = subprocess.check_output(
-                ["coverage", "run", "-a", "pyauthenticator", "test"],
+                ["coverage", "run", "-a", "-m", "pyauthenticator", "test"],
                 universal_newlines=True
             )
         except subprocess.CalledProcessError as e:
@@ -38,7 +38,7 @@ class CmdSubprocessTest(unittest.TestCase):
     def test_main_generate_qr_code(self):
         try:
             subprocess.check_output(
-                ["coverage", "run", "-a", "pyauthenticator", "-qr", "test"],
+                ["coverage", "run", "-a", "-m", "pyauthenticator", "-qr", "test"],
                 universal_newlines=True
             )
         except subprocess.CalledProcessError as e:
@@ -46,7 +46,7 @@ class CmdSubprocessTest(unittest.TestCase):
         self.assertTrue(os.path.exists("test.png"))
         try:
             subprocess.check_output(
-                ["coverage", "run", "-a", "pyauthenticator", "-a", "test.png", "test2"],
+                ["coverage", "run", "-a", "-m", "pyauthenticator", "-a", "test.png", "test2"],
                 universal_newlines=True
             )
         except subprocess.CalledProcessError as e:
