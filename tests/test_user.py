@@ -1,8 +1,7 @@
 import os
 import unittest
-import json
 
-from pyauthenticator import get_two_factor_code, write_qrcode_to_file, add_two_factor_provider, list_two_factor_providers
+from pyauthenticator._user import get_two_factor_code, write_qrcode_to_file, add_two_factor_provider, list_two_factor_providers
 from pyauthenticator._config import default_config_file, write_config, load_config
 
 
