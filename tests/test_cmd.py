@@ -26,19 +26,19 @@ class CmdSubprocessTest(unittest.TestCase):
 
     def test_main_generate_two_factor(self):
         code = subprocess.check_output(
-            ["coverage", "run", "-a", "pyauthenticator", "test"],
+            ["coverage", "run", "-a", "-m", "pyauthenticator", "test"],
             universal_newlines=True
         )
         self.assertEqual(len(code.replace("\n", "")), 6)
 
     def test_main_generate_qr_code(self):
         subprocess.check_output(
-            ["coverage", "run", "-a", "pyauthenticator", "-qr", "test"],
+            ["coverage", "run", "-a", "-m", "pyauthenticator", "-qr", "test"],
             universal_newlines=True
         )
         self.assertTrue(os.path.exists("test.png"))
         subprocess.check_output(
-            ["coverage", "run", "-a", "pyauthenticator", "-a", "test.png", "test2"],
+            ["coverage", "run", "-a", "-m", "pyauthenticator", "-a", "test.png", "test2"],
             universal_newlines=True
         )
         with open(self.config_path, "r") as f:

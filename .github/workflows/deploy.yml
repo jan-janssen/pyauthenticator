@@ -26,7 +26,7 @@ jobs:
     - name: Convert dependencies
       run: |
         sed -i 's/==/>=/g' pyproject.toml; cat pyproject.toml
-        git update-index --assume-unchanged pyproject.toml pyauthenticator/_version.py
+        git update-index --assume-unchanged pyproject.toml src/pyauthenticator/_version.py
     - name: Build
       shell: bash -l {0}
       run: hatchling build -t sdist -t wheel
