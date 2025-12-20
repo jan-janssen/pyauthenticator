@@ -4,9 +4,9 @@ Generate two factor authentication codes on the command line
 
 from typing import Optional
 from . import _version
+from pyauthenticator.config import load_config
 from pyauthenticator.share import generate_qrcode
 from pyauthenticator.share import get_two_factor_code as get_two_factor_code_internal
-from pyauthenticator.share import load_config
 
 __version__: str = _version.__version__
 

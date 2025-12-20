@@ -5,12 +5,14 @@ import os
 import unittest
 from typing import Dict
 
-from pyauthenticator.share import (
-    check_if_key_in_config,
+from pyauthenticator.config import (
     expand_path,
     get_otpauth_dict,
     load_config,
-    write_config
+    write_config,
+)
+from pyauthenticator.share import (
+    _check_if_key_in_config,
 )
 
 
@@ -60,12 +62,12 @@ class ShareTest(unittest.TestCase):
 
     def test_check_if_key_in_config(self):
         test_dict: Dict[str, str] = {"key": "value"}
-        check_if_key_in_config(
+        _check_if_key_in_config(
             key="key",
             config_dict=test_dict
         )
         with self.assertRaises(ValueError):
-            check_if_key_in_config(
+            _check_if_key_in_config(
                 key="secret",
                 config_dict=test_dict
             )

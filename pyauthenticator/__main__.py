@@ -6,12 +6,12 @@ import argparse
 import sys
 from typing import Optional, Sequence
 
+from pyauthenticator.config import load_config
 from pyauthenticator.share import (
     add_service,
     generate_qrcode,
     get_two_factor_code,
     list_services,
-    load_config,
 )
 
 
