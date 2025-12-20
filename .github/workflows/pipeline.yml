@@ -120,7 +120,7 @@ jobs:
       run: |
         pip install --no-deps .
         coverage run
-        coverage combine
+        coverage report
         coverage xml
     - name: Coveralls
       uses: coverallsapp/github-action@v2
