@@ -1,0 +1,13 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Coverage reports
+.coverage
+.coverage.*
+htmlcov/
+
+# Test artifacts
+*.png
