@@ -6,7 +6,7 @@ from contextlib import redirect_stdout
 from io import StringIO
 
 from pyauthenticator.__main__ import command_line_parser
-from pyauthenticator.config import default_config_file, expand_path, write_config
+from pyauthenticator.config import default_config_file, write_config
 
 
 class CmdSubprocessTest(unittest.TestCase):
@@ -15,7 +15,7 @@ class CmdSubprocessTest(unittest.TestCase):
         cls.config_dict = {
             "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test"
         }
-        cls.config_path = expand_path(default_config_file)
+        cls.config_path = os.path.abspath(os.path.expanduser(default_config_file))
         if not os.path.exists(cls.config_path):
             write_config(
                 config_dict=cls.config_dict
@@ -49,7 +49,7 @@ class CmdParserTest(unittest.TestCase):
         cls.config_dict = {
             "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test"
         }
-        cls.config_path = expand_path(default_config_file)
+        cls.config_path = os.path.abspath(os.path.expanduser(default_config_file))
         if not os.path.exists(cls.config_path):
             write_config(
                 config_dict=cls.config_dict

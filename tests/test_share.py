@@ -6,7 +6,6 @@ import unittest
 from typing import Dict
 
 from pyauthenticator.config import (
-    expand_path,
     get_otpauth_dict,
     load_config,
     write_config,
@@ -17,17 +16,6 @@ from pyauthenticator.share import (
 
 
 class ShareTest(unittest.TestCase):
-    def test_expand_path(self):
-        test_path = "~/.pyauthenticator"
-        self.assertEqual(
-            expand_path(path=test_path),
-            os.path.abspath(
-                os.path.expanduser(
-                    test_path
-                )
-            )
-        )
-
     def test_config(self):
         test_file_name = "test.json"
         test_dict: Dict[str, str] = {"key": "value"}
