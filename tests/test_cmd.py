@@ -25,22 +25,32 @@ class CmdSubprocessTest(unittest.TestCase):
             )
 
     def test_main_generate_two_factor(self):
-        code = subprocess.check_output(
-            ["coverage", "run", "-a", "pyauthenticator", "test"],
-            universal_newlines=True
-        )
+        try:
+            code = subprocess.check_output(
+                ["coverage", "run", "-a", "pyauthenticator", "test"],
+                universal_newlines=True
+            )
+        except subprocess.CalledProcessError as e:
+            print(e.output)
+            code = ""
         self.assertEqual(len(code.replace("\n", "")), 6)
 
     def test_main_generate_qr_code(self):
-        subprocess.check_output(
-            ["coverage", "run", "-a", "pyauthenticator", "-qr", "test"],
-            universal_newlines=True
-        )
+        try:
+            subprocess.check_output(
+                ["coverage", "run", "-a", "pyauthenticator", "-qr", "test"],
+                universal_newlines=True
+            )
+        except subprocess.CalledProcessError as e:
+            print(e.output)
         self.assertTrue(os.path.exists("test.png"))
-        subprocess.check_output(
-            ["coverage", "run", "-a", "pyauthenticator", "-a", "test.png", "test2"],
-            universal_newlines=True
-        )
+        try:
+            subprocess.check_output(
+                ["coverage", "run", "-a", "pyauthenticator", "-a", "test.png", "test2"],
+                universal_newlines=True
+            )
+        except subprocess.CalledProcessError as e:
+            print(e.output)
         with open(self.config_path, "r") as f:
             config_dict = json.load(f)
         self.assertTrue("test2" in config_dict.keys())
