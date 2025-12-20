@@ -25,7 +25,7 @@ def get_two_factor_code(key: str, config_dict: Dict[str, Any]) -> str:
     """
     _check_if_key_in_config(key=key, config_dict=config_dict)
     decode_dict_internal = get_otpauth_dict(otpauth_str=config_dict[key])
-    kwargs = {}
+    kwargs: dict[str, Any] = {}
     if "digits" in decode_dict_internal.keys():
         kwargs["digits"] = int(decode_dict_internal["digits"])
     if "period" in decode_dict_internal.keys():
