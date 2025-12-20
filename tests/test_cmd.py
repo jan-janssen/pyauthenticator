@@ -1,9 +1,12 @@
 import json
 import os
+import runpy
 import subprocess
+import sys
 import unittest
 from contextlib import redirect_stdout
 from io import StringIO
+from unittest.mock import patch
 
 from pyauthenticator.__main__ import command_line_parser
 from pyauthenticator._config import default_config_file, write_config
@@ -66,6 +69,29 @@ class CmdParserTest(unittest.TestCase):
             "The service \"test3\" does not exist."
         )
 
+    def test_no_service(self):
+        """
+        Test calling the command line parser without a service.
+        """
+        with self.assertRaises(SystemExit):
+            with redirect_stdout(StringIO()):
+                command_line_parser(cmd_args=[])
+
+    def test_help(self):
+        """
+        Test calling the command line parser with the --help argument.
+        """
+        with self.assertRaises(SystemExit):
+            with redirect_stdout(StringIO()):
+                command_line_parser(cmd_args=["--help"])
+
+    def test_version(self):
+        """
+        Test the version is imported correctly.
+        """
+        from pyauthenticator import __version__
+        self.assertIsNotNone(__version__)
+
     def test_main_generate_qr_code(self):
         with redirect_stdout(StringIO()) as sout:
             command_line_parser(cmd_args=["-qr", "test"])
@@ -84,6 +110,39 @@ class CmdParserTest(unittest.TestCase):
             config_dict = json.load(f)
         self.assertTrue("test4" in config_dict.keys())
 
+    def test_main_entry_point(self):
+        """
+        Test the __main__ entry point.
+        """
+        with patch.object(sys, 'argv', ['pyauthenticator', 'test']):
+            runpy.run_module('pyauthenticator', run_name='__main__')
+
+    def test_qr_non_existent_service(self):
+        """
+        Test generating a QR code for a non-existent service.
+        """
+        with redirect_stdout(StringIO()) as sout:
+            command_line_parser(cmd_args=["-qr", "non_existent_service"])
+        self.assertIn("does not exist", sout.getvalue())
+
+class EmptyConfigTest(unittest.TestCase):
+    @patch('pyauthenticator.__main__.load_config', return_value={})
+    def test_no_services_message(self, mock_load_config):
+        """
+        Test the message when a service is provided but no services are configured.
+        """
+        with redirect_stdout(StringIO()) as sout:
+            command_line_parser(cmd_args=["some_service"])
+        self.assertIn("The config file ~/.pyauthenticator does not contain any services.", sout.getvalue())
+
+    @patch('pyauthenticator.__main__.load_config', return_value={})
+    def test_help_with_empty_config(self, mock_load_config):
+        """
+        Test help message when no services are configured.
+        """
+        with self.assertRaises(SystemExit):
+             with redirect_stdout(StringIO()):
+                command_line_parser(cmd_args=["--help"])
 
 if __name__ == '__main__':
     unittest.main()
