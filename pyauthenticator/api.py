@@ -5,7 +5,7 @@ Shared functionality to generate two factor authentication codes
 from typing import Any, Dict, List, Optional
 
 from pyauthenticator._core import decode_qrcode, encode_qrcode, get_totp
-from pyauthenticator._config import default_config_file, get_otpauth_dict, write_config
+from pyauthenticator._config import default_config_file, write_config
 
 
 def get_totp_for_key_in_dict(key: str, config_dict: Dict[str, Any]) -> str:
@@ -19,7 +19,7 @@ def get_totp_for_key_in_dict(key: str, config_dict: Dict[str, Any]) -> str:
     Returns:
         str: two factor authentication code as string
     """
-    return get_totp(otpauth_dict=get_otpauth_dict(otpauth_str=config_dict[key]))
+    return get_totp(otpauth_str=config_dict[key])
 
 
 def add_service(

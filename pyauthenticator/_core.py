@@ -34,16 +34,23 @@ def encode_qrcode(otpauth_str: str, file_name: str) -> None:
     qrcode.make(otpauth_str).save(file_name, "PNG")
 
 
-def get_totp(otpauth_dict: dict[str, str]) -> str:
+def get_totp(otpauth_str: str) -> str:
     """
     Get TOTP code for a specific service based on its otpauth dictionary
 
     Args:
-        otpauth_dict (dict[str, str]): for the service
+        otpauth_str (str): otpauth string for the service
 
     Returns:
         str: TOTP code for the service
     """
+    otpauth_dict={
+        kv[0]: kv[1]
+        for kv in [
+            otpvar.split("=") for otpvar in otpauth_str.replace("?", "&").split("&")[1:]
+        ]
+    }
+
     kwargs: dict[str, Any] = {}
     if "digits" in otpauth_dict.keys():
         kwargs["digits"] = int(otpauth_dict["digits"])

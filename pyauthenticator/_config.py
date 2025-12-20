@@ -40,21 +40,3 @@ def write_config(
     """
     with open(abspath(expanduser(config_file_to_write)), "w") as f:
         json.dump(config_dict, f)
-
-
-def get_otpauth_dict(otpauth_str: str) -> Dict[str, str]:
-    """
-    Parse otpauth url
-
-    Args:
-        otpauth_str (str): otpauth url as string
-
-    Returns:
-        dict: Dictionary with the parameters of the otpauth url as key-value pairs
-    """
-    return {
-        kv[0]: kv[1]
-        for kv in [
-            otpvar.split("=") for otpvar in otpauth_str.replace("?", "&").split("&")[1:]
-        ]
-    }
