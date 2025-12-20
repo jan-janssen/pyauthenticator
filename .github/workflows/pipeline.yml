@@ -151,5 +151,6 @@ jobs:
         shell: bash -l {0}
         timeout-minutes: 5
         run: |
+          cp -r docs/images .
           papermill docs/technology.ipynb docs/technology-out.ipynb -k python3
           papermill docs/implementation.ipynb docs/implementation-out.ipynb -k python3
