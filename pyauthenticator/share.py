@@ -2,7 +2,6 @@
 Shared functionality to generate two factor authentication codes
 """
 
-from inspect import signature
 from typing import Any, Dict, List, Optional
 
 import pyotp
@@ -26,24 +25,16 @@ def get_two_factor_code(key: str, config_dict: Dict[str, Any]) -> str:
     """
     _check_if_key_in_config(key=key, config_dict=config_dict)
     decode_dict_internal = get_otpauth_dict(otpauth_str=config_dict[key])
-    funct_sig = signature(pyotp.TOTP)
+    kwargs = {}
     if "digits" in decode_dict_internal.keys():
-        digits = int(decode_dict_internal["digits"])
-    else:
-        digits = funct_sig.parameters["digits"].default
+        kwargs["digits"] = int(decode_dict_internal["digits"])
     if "period" in decode_dict_internal.keys():
-        interval = int(decode_dict_internal["period"])
-    else:
-        interval = funct_sig.parameters["interval"].default
+        kwargs["interval"] = int(decode_dict_internal["period"])
     if "issuer" in decode_dict_internal.keys():
-        issuer = decode_dict_internal["issuer"]
-    else:
-        issuer = funct_sig.parameters["issuer"].default
+        kwargs["issuer"] = decode_dict_internal["issuer"]
     return pyotp.TOTP(
+        **kwargs,
         s=decode_dict_internal["secret"],
-        digits=digits,
-        issuer=issuer,
-        interval=interval,
     ).now()
 
 
