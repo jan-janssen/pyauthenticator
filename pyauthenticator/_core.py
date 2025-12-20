@@ -44,7 +44,7 @@ def get_totp(otpauth_str: str) -> str:
     Returns:
         str: TOTP code for the service
     """
-    otpauth_dict={
+    otpauth_dict = {
         kv[0]: kv[1]
         for kv in [
             otpvar.split("=") for otpvar in otpauth_str.replace("?", "&").split("&")[1:]
