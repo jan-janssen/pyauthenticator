@@ -1,0 +1,15 @@
+channels:
+- conda-forge
+dependencies:
+- hatchling
+- hatch-vcs
+- myst-parser
+- nbsphinx
+- sphinx
+- sphinx_rtd_theme
+- jupyter-book =1.0.0
+- qrcode=8.2
+- pyotp=2.9.0
+- pyzbar=0.1.9
+- zbar=0.10
+- pillow=11.3.0
