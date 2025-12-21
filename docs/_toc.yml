@@ -1,5 +1,5 @@
 format: jb-book
-root: introduction.md
+root: README.md
 chapters:
 - file: technology.ipynb
 - file: implementation.ipynb
