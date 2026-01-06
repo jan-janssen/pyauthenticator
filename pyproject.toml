@@ -5,7 +5,7 @@ requires = [
     "pyotp==2.9.0",
     "qrcode==8.2",
     "pyzbar==0.1.9",
-    "pillow==11.3.0",
+    "pillow==12.1.0",
 ]
 build-backend = "hatchling.build"
 
@@ -40,7 +40,7 @@ dependencies = [
     "pyotp==2.9.0",
     "qrcode==8.2",
     "pyzbar==0.1.9",
-    "pillow==11.3.0",
+    "pillow==12.1.0",
 ]
 
 [project.urls]
