@@ -1,6 +1,6 @@
 # pyauthenticator
 [![Pipeline](https://github.com/jan-janssen/pyauthenticator/actions/workflows/pipeline.yml/badge.svg)](https://github.com/jan-janssen/pyauthenticator/actions/workflows/pipeline.yml)
-[![Coverage Status](https://coveralls.io/repos/github/jan-janssen/pyauthenticator/badge.svg?branch=main)](https://coveralls.io/github/jan-janssen/pyauthenticator?branch=main)
+[![codecov](https://codecov.io/github/jan-janssen/pyauthenticator/graph/badge.svg?token=K0VG71K9YI)](https://codecov.io/github/jan-janssen/pyauthenticator)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Similar to the Google authenticator just written in Python. With more and more services requiring two factor
