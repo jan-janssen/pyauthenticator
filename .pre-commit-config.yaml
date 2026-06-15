@@ -5,6 +5,6 @@ repos:
       - id: ruff
         name: ruff lint
         args: ["--fix"]
-        files: ^src/executorlib/
+        files: ^src/pyauthenticator/
       - id: ruff-format
         name: ruff format
