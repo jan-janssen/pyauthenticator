@@ -52,11 +52,11 @@ def get_totp(otpauth_str: str) -> str:
     }
 
     kwargs: dict[str, Any] = {}
-    if "digits" in otpauth_dict.keys():
+    if "digits" in otpauth_dict:
         kwargs["digits"] = int(otpauth_dict["digits"])
-    if "period" in otpauth_dict.keys():
+    if "period" in otpauth_dict:
         kwargs["interval"] = int(otpauth_dict["period"])
-    if "issuer" in otpauth_dict.keys():
+    if "issuer" in otpauth_dict:
         kwargs["issuer"] = otpauth_dict["issuer"]
     return pyotp.TOTP(
         **kwargs,

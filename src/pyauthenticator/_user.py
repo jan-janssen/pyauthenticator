@@ -3,6 +3,7 @@ Generate two factor authentication codes on the command line
 """
 
 from typing import Optional
+
 from pyauthenticator._config import default_config_file, load_config
 from pyauthenticator.api import (
     add_service,

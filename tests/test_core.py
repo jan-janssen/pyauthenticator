@@ -1,14 +1,17 @@
 """
 Tests for the pyauthenticator.core module
 """
+
 import unittest
 import os
 from pyauthenticator._core import decode_qrcode, encode_qrcode, get_totp
+
 
 class TestAuthenticatorCore(unittest.TestCase):
     """
     Tests for the core module
     """
+
     def setUp(self):
         self.otpauth_str = "otpauth://totp/Test?secret=JBSWY3DPEHPK3PXP&issuer=Test"
         self.qr_code_file = "test_qr.png"
@@ -39,11 +42,13 @@ class TestAuthenticatorCore(unittest.TestCase):
         """
         Test generating a TOTP code with digits and period options
         """
-        otpauth_str = "otpauth://totp/Test?secret=JBSWY3DPEHPK3PXP&issuer=Test&digits=8&period=60"
+        otpauth_str = (
+            "otpauth://totp/Test?secret=JBSWY3DPEHPK3PXP&issuer=Test&digits=8&period=60"
+        )
         code = get_totp(otpauth_str=otpauth_str)
         self.assertTrue(code.isdigit())
         self.assertEqual(len(code), 8)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
