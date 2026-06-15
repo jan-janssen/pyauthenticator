@@ -4,8 +4,8 @@ Shared functionality to generate two factor authentication codes
 
 from typing import Any, Dict, List, Optional
 
-from pyauthenticator._core import decode_qrcode, encode_qrcode, get_totp
 from pyauthenticator._config import default_config_file, write_config
+from pyauthenticator._core import decode_qrcode, encode_qrcode, get_totp
 
 
 def get_totp_for_key_in_dict(key: str, config_dict: Dict[str, Any]) -> str:

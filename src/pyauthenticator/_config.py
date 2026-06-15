@@ -3,7 +3,7 @@ Configuration file handling for pyauthenticator
 """
 
 import json
-from os.path import exists, abspath, expanduser
+from os.path import abspath, exists, expanduser
 from typing import Any, Dict
 
 # default configuration file
@@ -22,7 +22,7 @@ def load_config(config_file_to_load: str = default_config_file) -> Dict[str, Any
     """
     abs_config_path = abspath(expanduser(config_file_to_load))
     if exists(abs_config_path):
-        with open(abs_config_path, "r") as f:
+        with open(abs_config_path) as f:
             return json.load(f)
     else:
         return {}
