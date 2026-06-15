@@ -76,7 +76,10 @@ select = [
     # pylint
     "PL",
 ]
-ignore = []
+ignore = [
+    # ignore line-length violations
+    "E501",
+]
 
 [tool.hatch.build]
 include = [
