@@ -2,7 +2,7 @@
 requires = [
     "hatchling==1.28.0",
     "hatch-vcs==0.5.0",
-    "pyotp==2.9.0",
+    "pyotp==2.10.0",
     "qrcode==8.2",
     "pyzbar==0.1.9",
     "pillow==12.1.0",
@@ -37,7 +37,7 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "pyotp==2.9.0",
+    "pyotp==2.10.0",
     "qrcode==8.2",
     "pyzbar==0.1.9",
     "pillow==12.1.0",
