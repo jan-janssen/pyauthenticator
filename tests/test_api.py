@@ -1,6 +1,7 @@
 """
 Test for core functionality
 """
+
 import os
 import unittest
 
@@ -19,13 +20,9 @@ class TestCore(unittest.TestCase):
         cls.qr_code_png = "test.png"
         cls.config_dict = {
             "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test&period=60&digits=6",
-            "test2": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN"
+            "test2": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN",
         }
-        generate_qrcode(
-            key="test",
-            config_dict=cls.config_dict,
-            file_name=None
-        )
+        generate_qrcode(key="test", config_dict=cls.config_dict, file_name=None)
 
     @classmethod
     def tearDownClass(cls):
@@ -41,7 +38,7 @@ class TestCore(unittest.TestCase):
             key="test",
             qrcode_png_file_name=self.qr_code_png,
             config_dict={},
-            config_file_to_write=config_file
+            config_file_to_write=config_file,
         )
         config_reload = load_config(config_file_to_load=config_file)
         self.assertEqual(config_reload["test"], self.config_dict["test"])
@@ -54,5 +51,5 @@ class TestCore(unittest.TestCase):
         self.assertEqual(len(code), 6)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -1,17 +1,20 @@
 """
 Tests for the pyauthenticator.config module
 """
+
 import unittest
 import os
 from pyauthenticator._config import load_config, write_config
+
 
 class TestConfig(unittest.TestCase):
     """
     Tests for the config module
     """
+
     def setUp(self):
-        self.config_file = 'test_config.json'
-        self.config_data = {'service': 'otpauth://totp/Test?secret=SECRET&issuer=Test'}
+        self.config_file = "test_config.json"
+        self.config_data = {"service": "otpauth://totp/Test?secret=SECRET&issuer=Test"}
 
     def tearDown(self):
         if os.path.exists(self.config_file):
@@ -21,7 +24,7 @@ class TestConfig(unittest.TestCase):
         """
         Test loading a non-existent config file
         """
-        self.assertEqual(load_config('non_existent_file.json'), {})
+        self.assertEqual(load_config("non_existent_file.json"), {})
 
     def test_write_and_load_config(self):
         """
@@ -33,5 +36,5 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(loaded_data, self.config_data)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

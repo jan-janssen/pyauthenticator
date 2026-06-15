@@ -1,7 +1,12 @@
 import os
 import unittest
 
-from pyauthenticator._user import get_two_factor_code, write_qrcode_to_file, add_two_factor_provider, list_two_factor_providers
+from pyauthenticator._user import (
+    get_two_factor_code,
+    write_qrcode_to_file,
+    add_two_factor_provider,
+    list_two_factor_providers,
+)
 from pyauthenticator._config import default_config_file, write_config, load_config
 
 
@@ -13,9 +18,7 @@ class TestUserInterface(unittest.TestCase):
         }
         cls.config_path = os.path.abspath(os.path.expanduser(default_config_file))
         if not os.path.exists(cls.config_path):
-            write_config(
-                config_dict=cls.config_dict
-            )
+            write_config(config_dict=cls.config_dict)
 
     def test_get_two_factor_code(self):
         code = get_two_factor_code(service="test")
@@ -36,7 +39,10 @@ class TestUserInterface(unittest.TestCase):
         # Create a dummy qr code file
         qr_code_file = "test_qr_add.png"
         import qrcode
-        qrcode.make("otpauth://totp/Test?secret=JBSWY3DPEHPK3PXP&issuer=Test").save(qr_code_file, "PNG")
+
+        qrcode.make("otpauth://totp/Test?secret=JBSWY3DPEHPK3PXP&issuer=Test").save(
+            qr_code_file, "PNG"
+        )
 
         # Add the provider
         add_two_factor_provider("new_test_service", qr_code_file)
@@ -52,5 +58,5 @@ class TestUserInterface(unittest.TestCase):
         os.remove(qr_code_file)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
