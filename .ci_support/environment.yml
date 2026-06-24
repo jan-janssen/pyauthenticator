@@ -9,4 +9,4 @@ dependencies:
 - pyotp=2.10.0
 - pyzbar=0.1.9
 - zbar=0.10
-- pillow=12.1.0
+- pillow=12.2.0
