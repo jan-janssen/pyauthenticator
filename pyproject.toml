@@ -49,8 +49,14 @@ Documentation = "https://github.com/jan-janssen/pyauthenticator/blob/master/READ
 Source = "https://github.com/jan-janssen/pyauthenticator"
 Tracker = "https://github.com/jan-janssen/pyauthenticator/issues"
 
+[project.optional-dependencies]
+mcp = [
+    "mcp>=1.28.1; python_version >= '3.10'",
+]
+
 [project.scripts]
 pyauthenticator = "pyauthenticator.__main__:command_line_parser"
+pyauthenticator-mcp = "pyauthenticator.mcp_server:main"
 
 [tool.hatch.build]
 include = [

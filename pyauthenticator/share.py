@@ -91,6 +91,36 @@ def check_if_key_in_config(key: str, config_dict: Dict[str, Any]) -> None:
         raise ValueError()
 
 
+def format_unknown_service_error(key: str, config_dict: Dict[str, Any]) -> str:
+    """
+    Format the error message for unknown services.
+
+    Args:
+        key (str): lower case name of the service
+        config_dict (dict): configuration dictionary
+
+    Returns:
+        str: formatted error message
+    """
+    if len(config_dict) > 0:
+        return "\n".join(
+            ['The service "' + key + '" does not exist.', ""]
+            + ["The config file ~/.pyauthenticator contains the following services:"]
+            + ["  * " + service for service in list_services(config_dict=config_dict)]
+            + [
+                "",
+                "Choose one of these or add a new service using:",
+                "  pyauthenticator --add <qr-code.png> <servicename>",
+            ]
+        )
+    return "\n".join(
+        [
+            "The config file ~/.pyauthenticator does not contain any services. To add a new service use:",
+            "  pyauthenticator --add <qr-code.png> <servicename>",
+        ]
+    )
+
+
 def get_two_factor_code(key: str, config_dict: Dict[str, Any]) -> str:
     """
     Generate the two factor authentication code
@@ -125,6 +155,26 @@ def get_two_factor_code(key: str, config_dict: Dict[str, Any]) -> str:
     ).now()
 
 
+def add_service_from_image(
+    key: str,
+    qrcode_image: Any,
+    config_dict: Dict[str, Any],
+    config_file_to_write: str = config_file,
+) -> None:
+    """
+    Add new service to configuration file from an already opened QR code image.
+
+    Args:
+        key (str): lower case name of the service
+        qrcode_image (Any): image object containing the QR code
+        config_dict (dict): configuration dictionary
+        config_file_to_write (str): path to config file
+    """
+    otpauth_str = decode(qrcode_image)[0].data.decode("utf-8")
+    config_dict[key] = otpauth_str
+    write_config(config_dict=config_dict, config_file_to_write=config_file_to_write)
+
+
 def add_service(
     key: str,
     qrcode_png_file_name: str,
@@ -140,9 +190,28 @@ def add_service(
         config_dict (dict): configuration dictionary
         config_file_to_write (str): path to config file
     """
-    otpauth_str = decode(Image.open(qrcode_png_file_name))[0].data.decode("utf-8")
-    config_dict[key] = otpauth_str
-    write_config(config_dict=config_dict, config_file_to_write=config_file_to_write)
+    with Image.open(qrcode_png_file_name) as qrcode_image:
+        add_service_from_image(
+            key=key,
+            qrcode_image=qrcode_image,
+            config_dict=config_dict,
+            config_file_to_write=config_file_to_write,
+        )
+
+
+def get_qrcode_image(key: str, config_dict: Dict[str, Any]) -> Any:
+    """
+    Generate qrcode as image.
+
+    Args:
+        key (str): lower case name of the service
+        config_dict (dict): configuration dictionary
+
+    Returns:
+        Any: QR code image object
+    """
+    check_if_key_in_config(key=key, config_dict=config_dict)
+    return qrcode.make(config_dict[key])
 
 
 def generate_qrcode(
@@ -158,8 +227,7 @@ def generate_qrcode(
     """
     if file_name is None:
         file_name = key + ".png"
-    check_if_key_in_config(key=key, config_dict=config_dict)
-    qrcode.make(config_dict[key]).save(file_name, "PNG")
+    get_qrcode_image(key=key, config_dict=config_dict).save(file_name, "PNG")
 
 
 def list_services(config_dict: Dict[str, Any]) -> List[str]:
@@ -173,3 +241,21 @@ def list_services(config_dict: Dict[str, Any]) -> List[str]:
         list: list of available services
     """
     return list(config_dict.keys())
+
+
+def remove_service(
+    key: str,
+    config_dict: Dict[str, Any],
+    config_file_to_write: str = config_file,
+) -> None:
+    """
+    Remove service from configuration file.
+
+    Args:
+        key (str): lower case name of the service
+        config_dict (dict): configuration dictionary
+        config_file_to_write (str): path to config file
+    """
+    check_if_key_in_config(key=key, config_dict=config_dict)
+    del config_dict[key]
+    write_config(config_dict=config_dict, config_file_to_write=config_file_to_write)

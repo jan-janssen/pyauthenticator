@@ -8,6 +8,7 @@ from typing import Optional, Sequence
 
 from pyauthenticator.share import (
     add_service,
+    format_unknown_service_error,
     generate_qrcode,
     get_two_factor_code,
     list_services,
@@ -64,20 +65,9 @@ def command_line_parser(cmd_args: Optional[Sequence[str]] = None) -> None:
         try:
             print(get_two_factor_code(key=args.service, config_dict=config_dict))
         except ValueError:
-            if len(config_dict) > 0:
-                print(
-                    'The service "'
-                    + args.service
-                    + '" does not exist.\n\nThe config file ~/.pyauthenticator contains the following services:'
-                )
-                for service in list_services(config_dict=config_dict):
-                    print("  * " + service)
-                print("\nChoose one of these or add a new service using:")
-            else:
-                print(
-                    "The config file ~/.pyauthenticator does not contain any services. To add a new service use:"
-                )
-            print("  pyauthenticator --add <qr-code.png> <servicename>\n")
+            print(
+                format_unknown_service_error(key=args.service, config_dict=config_dict)
+            )
 
 
 if __name__ == "__main__":

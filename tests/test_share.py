@@ -1,6 +1,7 @@
 """
 Test for shared functionality
 """
+
 import os
 import unittest
 from typing import Dict
@@ -8,9 +9,11 @@ from typing import Dict
 from pyauthenticator.share import (
     check_if_key_in_config,
     expand_path,
+    format_unknown_service_error,
     get_otpauth_dict,
     load_config,
-    write_config
+    remove_service,
+    write_config,
 )
 
 
@@ -18,58 +21,65 @@ class ShareTest(unittest.TestCase):
     def test_expand_path(self):
         test_path = "~/.pyauthenticator"
         self.assertEqual(
-            expand_path(path=test_path),
-            os.path.abspath(
-                os.path.expanduser(
-                    test_path
-                )
-            )
+            expand_path(path=test_path), os.path.abspath(os.path.expanduser(test_path))
         )
 
     def test_config(self):
         test_file_name = "test.json"
         test_dict: Dict[str, str] = {"key": "value"}
-        write_config(
-            config_dict=test_dict,
-            config_file_to_write=test_file_name
-        )
-        test_dict_reload = load_config(
-            config_file_to_load=test_file_name
-        )
+        write_config(config_dict=test_dict, config_file_to_write=test_file_name)
+        test_dict_reload = load_config(config_file_to_load=test_file_name)
         self.assertDictEqual(test_dict, test_dict_reload)
-        test_no_dict = load_config(
-            config_file_to_load="no.json"
-        )
+        test_no_dict = load_config(config_file_to_load="no.json")
         self.assertDictEqual(test_no_dict, {})
         os.remove(test_file_name)
-        test_dict_reload = load_config(
-            config_file_to_load=test_file_name
-        )
+        test_dict_reload = load_config(config_file_to_load=test_file_name)
         self.assertDictEqual({}, test_dict_reload)
 
     def test_get_otpauth_dict(self):
-        otpauth_str = "otpauth://totp/Test%3A%20root%40github.com?secret=MAGICSECRET&issuer=Test"
-        otpauth_dict = get_otpauth_dict(
-            otpauth_str=otpauth_str
+        otpauth_str = (
+            "otpauth://totp/Test%3A%20root%40github.com?secret=MAGICSECRET&issuer=Test"
         )
-        otp_test_dict: Dict[str, str] = {
-            'secret': 'MAGICSECRET',
-            'issuer': 'Test'
-        }
+        otpauth_dict = get_otpauth_dict(otpauth_str=otpauth_str)
+        otp_test_dict: Dict[str, str] = {"secret": "MAGICSECRET", "issuer": "Test"}
         self.assertDictEqual(otpauth_dict, otp_test_dict)
 
     def test_check_if_key_in_config(self):
         test_dict: Dict[str, str] = {"key": "value"}
-        check_if_key_in_config(
-            key="key",
-            config_dict=test_dict
-        )
+        check_if_key_in_config(key="key", config_dict=test_dict)
         with self.assertRaises(ValueError):
-            check_if_key_in_config(
-                key="secret",
-                config_dict=test_dict
-            )
+            check_if_key_in_config(key="secret", config_dict=test_dict)
+
+    def test_format_unknown_service_error(self):
+        self.assertEqual(
+            format_unknown_service_error(key="secret", config_dict={}),
+            "The config file ~/.pyauthenticator does not contain any services. To add a new service use:\n"
+            "  pyauthenticator --add <qr-code.png> <servicename>",
+        )
+        self.assertIn(
+            'The service "secret" does not exist.',
+            format_unknown_service_error(
+                key="secret", config_dict={"github": "otpauth://totp/test?secret=MAGIC"}
+            ),
+        )
+
+    def test_remove_service(self):
+        test_file_name = "test_remove.json"
+        write_config(
+            config_dict={"key": "value", "keep": "value2"},
+            config_file_to_write=test_file_name,
+        )
+        config_dict = load_config(config_file_to_load=test_file_name)
+        remove_service(
+            key="key",
+            config_dict=config_dict,
+            config_file_to_write=test_file_name,
+        )
+        self.assertDictEqual(
+            load_config(config_file_to_load=test_file_name), {"keep": "value2"}
+        )
+        os.remove(test_file_name)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

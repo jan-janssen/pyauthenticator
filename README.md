@@ -89,5 +89,24 @@ the config file contains:
 ```
 With the Google username `<username>` and the corresponding secret `<secret>` being contained in the QR code.
 
+## MCP Server
+`pyauthenticator` also provides an MCP server for MCP-compatible hosts on Python 3.10+.
+Install the optional dependency with:
+```bash
+pip install "pyauthenticator[mcp]"
+```
+
+The server is exposed as the `pyauthenticator-mcp` command. For example, a Claude Desktop or
+Claude Code configuration can reference it as:
+```json
+{
+  "mcpServers": {
+    "pyauthenticator": {
+      "command": "pyauthenticator-mcp"
+    }
+  }
+}
+```
+
 ## License 
 The `pyauthenticator` package is licensed under the [BSD-3-Clause license](https://github.com/jan-janssen/pyauthenticator/blob/main/LICENSE). 
