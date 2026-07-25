@@ -1,18 +1,55 @@
 import base64
+import importlib.util
 import os
 import tempfile
 import unittest
+from unittest import mock
 
+import pyauthenticator.mcp_server as mcp_server_module
 from pyauthenticator.mcp_server import (
     add_service,
     get_code,
     get_qrcode,
     list_services,
+    main,
     mcp,
     remove_service,
 )
 from pyauthenticator._config import load_config, write_config
 from pyauthenticator.api import generate_qrcode
+
+
+class MCPServerImportTest(unittest.TestCase):
+    def test_main_runs_stdio_transport(self):
+        server = mock.Mock()
+        with mock.patch.object(
+            mcp_server_module, "create_mcp_server", return_value=server
+        ):
+            main()
+        server.run.assert_called_once_with(transport="stdio")
+
+    def test_import_without_mcp_dependency(self):
+        spec = importlib.util.spec_from_file_location(
+            "pyauthenticator.mcp_server_without_mcp", mcp_server_module.__file__
+        )
+        self.assertIsNotNone(spec)
+        self.assertIsNotNone(spec.loader)
+        module = importlib.util.module_from_spec(spec)
+        original_import = __import__
+
+        def _import_without_mcp(name, globals=None, locals=None, fromlist=(), level=0):
+            if name == "mcp.server.fastmcp":
+                raise ImportError("mcp unavailable")
+            return original_import(name, globals, locals, fromlist, level)
+
+        with mock.patch("builtins.__import__", side_effect=_import_without_mcp):
+            spec.loader.exec_module(module)
+
+        self.assertIsNone(module.FastMCP)
+        self.assertIsNone(module.MCPImage)
+        self.assertIsNone(module.mcp)
+        with self.assertRaisesRegex(ImportError, "optional 'mcp' dependency"):
+            module._require_mcp()
 
 
 @unittest.skipIf(mcp is None, "mcp optional dependency not installed")
@@ -77,11 +114,47 @@ class MCPServerTest(unittest.TestCase):
                 qrcode_base64="Zm9v",
             )
 
+    def test_add_service_rejects_invalid_base64(self):
+        with self.assertRaisesRegex(
+            ValueError, "qrcode_base64 must be valid base64-encoded PNG data"
+        ):
+            add_service(service="test2", qrcode_base64="!!!")
+
     def test_get_qrcode(self):
         qrcode_image = get_qrcode(service="test")
         image_content = qrcode_image.to_image_content()
         self.assertEqual(image_content.mimeType, "image/png")
         self.assertTrue(len(image_content.data) > 0)
+
+    def test_unknown_service_errors_include_available_services(self):
+        with self.assertRaisesRegex(
+            ValueError,
+            'The service "missing" does not exist.\n\n'
+            "The config file ~/.pyauthenticator contains the following services:\n"
+            "  \\* test\n\n"
+            "Choose one of these or add a new service using:\n"
+            "  pyauthenticator --add <qr-code.png> <servicename>",
+        ):
+            get_code(service="missing")
+        with self.assertRaisesRegex(
+            ValueError,
+            'The service "missing" does not exist.\n\n'
+            "The config file ~/.pyauthenticator contains the following services:\n"
+            "  \\* test\n\n"
+            "Choose one of these or add a new service using:\n"
+            "  pyauthenticator --add <qr-code.png> <servicename>",
+        ):
+            remove_service(service="missing")
+
+    def test_unknown_service_errors_when_config_is_empty(self):
+        write_config(config_dict={})
+        with self.assertRaisesRegex(
+            ValueError,
+            "The config file ~/.pyauthenticator does not contain any services. "
+            "To add a new service use:\n"
+            "  pyauthenticator --add <qr-code.png> <servicename>",
+        ):
+            get_qrcode(service="missing")
 
     def test_tools_are_registered(self):
         self.assertEqual(
