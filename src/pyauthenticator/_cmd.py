@@ -6,13 +6,12 @@ import argparse
 import sys
 from typing import Optional, Sequence
 
-from pyauthenticator.share import (
+from pyauthenticator._config import load_config
+from pyauthenticator.api import (
     add_service,
-    format_unknown_service_error,
     generate_qrcode,
-    get_two_factor_code,
+    get_totp_for_key_in_dict,
     list_services,
-    load_config,
 )
 
 
@@ -48,8 +47,14 @@ def command_line_parser(cmd_args: Optional[Sequence[str]] = None) -> None:
     )
     args = parser.parse_args(args=cmd_args)
     if args.qrcode:
-        generate_qrcode(key=args.service, config_dict=config_dict)
-        print("The qrcode file <" + args.service + ".png> was generated.")
+        try:
+            generate_qrcode(key=args.service, config_dict=config_dict)
+        except KeyError:
+            _print_service_does_not_exists(
+                config_dict=config_dict, service=args.service
+            )
+        else:
+            print("The qrcode file <" + args.service + ".png> was generated.")
     elif args.add:
         add_service(
             key=args.service, qrcode_png_file_name=args.add, config_dict=config_dict
@@ -63,12 +68,25 @@ def command_line_parser(cmd_args: Optional[Sequence[str]] = None) -> None:
         )
     else:
         try:
-            print(get_two_factor_code(key=args.service, config_dict=config_dict))
-        except ValueError:
-            print(
-                format_unknown_service_error(key=args.service, config_dict=config_dict)
+            print(get_totp_for_key_in_dict(key=args.service, config_dict=config_dict))
+        except KeyError:
+            _print_service_does_not_exists(
+                config_dict=config_dict, service=args.service
             )
 
 
-if __name__ == "__main__":
-    command_line_parser()
+def _print_service_does_not_exists(config_dict: dict, service: str) -> None:
+    if len(config_dict) > 0:
+        print(
+            'The service "'
+            + service
+            + '" does not exist.\n\nThe config file ~/.pyauthenticator contains the following services:'
+        )
+        for service_in_config in list_services(config_dict=config_dict):
+            print("  * " + service_in_config)
+        print("\nChoose one of these or add a new service using:")
+    else:
+        print(
+            "The config file ~/.pyauthenticator does not contain any services. To add a new service use:"
+        )
+    print("  pyauthenticator --add <qr-code.png> <servicename>\n")

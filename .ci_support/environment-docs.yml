@@ -1,10 +1,13 @@
 channels:
 - conda-forge
 dependencies:
-- python
-- coverage
-- hatchling =1.31.0
+- hatchling =1.30.1
 - hatch-vcs =0.5.0
+- myst-parser
+- nbsphinx
+- sphinx
+- sphinx_rtd_theme
+- jupyter-book =1.0.0
 - qrcode=8.2
 - pyotp=2.10.0
 - pyzbar=0.1.9

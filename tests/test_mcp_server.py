@@ -11,7 +11,8 @@ from pyauthenticator.mcp_server import (
     mcp,
     remove_service,
 )
-from pyauthenticator.share import generate_qrcode, load_config, write_config
+from pyauthenticator._config import load_config, write_config
+from pyauthenticator.api import generate_qrcode
 
 
 @unittest.skipIf(mcp is None, "mcp optional dependency not installed")

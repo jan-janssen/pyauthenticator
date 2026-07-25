@@ -13,7 +13,7 @@ jobs:
     - uses: psf/black@stable
       with:
         options: "--check --diff"
-        src: ./${{ github.event.repository.name }}
+        src: ./src/${{ github.event.repository.name }}
 
   black_fix:  # in most cases pre-commit is faster
     needs: [black]
@@ -29,7 +29,7 @@ jobs:
       uses: psf/black@stable
       with:
         options: ""
-        src: "./${{ github.event.repository.name }}"
+        src: "./src/${{ github.event.repository.name }}"
     - name: commit
       run: |
         git config --local user.email "pyiron@mpie.de"
@@ -48,14 +48,14 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: "3.14"
           architecture: x64
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install mypy
         run: pip install mypy
       - name: Test
-        run: mypy --ignore-missing-imports ${{ github.event.repository.name }}
+        run: mypy --ignore-missing-imports src/${{ github.event.repository.name }}
 
   pip_check:
     needs: [black]
@@ -66,7 +66,7 @@ jobs:
       run: echo -e "channels:\n  - conda-forge\n" > .condarc
     - uses: conda-incubator/setup-miniconda@v3
       with:
-        python-version: "3.13"
+        python-version: "3.14"
         miniforge-version: latest
         condarc-file: .condarc
         environment-file: .ci_support/environment.yml
@@ -83,7 +83,7 @@ jobs:
     strategy:
       matrix:
         operating-system: [ubuntu-latest, macos-latest]
-        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+        python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
     steps:
     - uses: actions/checkout@v4
     - name: Conda config
@@ -99,7 +99,7 @@ jobs:
       shell: bash -l {0}
       run: |
         pip install --no-deps .
-        coverage run -a -m unittest discover tests
+        coverage run
 
   coverage:
     needs: [black]
@@ -111,7 +111,7 @@ jobs:
       run: echo -e "channels:\n  - conda-forge\n" > .condarc
     - uses: conda-incubator/setup-miniconda@v3
       with:
-        python-version: '3.13'
+        python-version: '3.14'
         miniforge-version: latest
         condarc-file: .condarc
         environment-file: .ci_support/environment.yml
@@ -119,8 +119,40 @@ jobs:
       shell: bash -l {0}
       run: |
         pip install --no-deps .
-        coverage run -a -m unittest discover tests
-        coverage combine
+        coverage run
+        coverage report
         coverage xml
-    - name: Coveralls
-      uses: coverallsapp/github-action@v2
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+
+  notebooks:
+    needs: [black]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Merge Notebook environment
+        run: |
+          cp .ci_support/environment.yml environment.yml
+          tail --lines=+4 .ci_support/environment-notebooks.yml >> environment.yml
+      - name: Conda config
+        shell: bash -l {0}
+        run: echo -e "channels:\n  - conda-forge\n" > .condarc
+      - name: Setup Mambaforge
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          python-version: '3.14'
+          miniforge-version: latest
+          condarc-file: .condarc
+          environment-file: environment.yml
+      - name: Install
+        shell: bash -l {0}
+        run: pip install . --no-deps --no-build-isolation
+      - name: Notebooks
+        shell: bash -l {0}
+        timeout-minutes: 5
+        run: |
+          cp -r docs/images .
+          papermill docs/technology.ipynb docs/technology-out.ipynb -k python3
+          papermill docs/implementation.ipynb docs/implementation-out.ipynb -k python3
