@@ -30,7 +30,7 @@ except ImportError:
     disable_mcp_tests = True
 
 
-@unittest.SkipIf(disable_mcp_tests, "mcp optional dependency not installed")
+@unittest.skipIf(disable_mcp_tests, "mcp optional dependency not installed")
 class MCPServerTest(unittest.TestCase):
     def setUp(self):
         self.tmp_dir = tempfile.TemporaryDirectory()
