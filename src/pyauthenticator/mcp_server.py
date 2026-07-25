@@ -8,10 +8,9 @@ import io
 from typing import Any, Dict, List, Optional
 
 import qrcode
+from mcp.server.fastmcp import FastMCP, Image
 from PIL import Image as PilImage
 from pyzbar.pyzbar import decode
-from mcp.server.fastmcp import FastMCP
-from mcp.server.fastmcp import Image
 
 from pyauthenticator._config import load_config, write_config
 from pyauthenticator.api import (
