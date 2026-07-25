@@ -108,5 +108,22 @@ Claude Code configuration can reference it as:
 }
 ```
 
+The server runs over the stdio transport and reads/writes the same `~/.pyauthenticator`
+configuration file as the command line interface, so services added via one interface are
+immediately available in the other.
+
+### Available tools
+| Tool | Arguments | Description |
+| --- | --- | --- |
+| `get_code` | `service: str` | Generate a two factor authentication code for a configured service. |
+| `list_services` | – | List the configured service names. |
+| `add_service` | `service: str`, `qrcode_path: Optional[str]`, `qrcode_base64: Optional[str]` | Add a service from a QR code file path or base64-encoded PNG bytes. Provide exactly one of `qrcode_path` or `qrcode_base64`. |
+| `remove_service` | `service: str` | Remove a configured service. |
+| `get_qrcode` | `service: str` | Return the QR code for a configured service as an MCP image (PNG). |
+
+`get_code`, `remove_service` and `get_qrcode` raise an error listing the currently configured
+services whenever `service` does not match an existing entry, mirroring the command line
+behaviour for unknown services.
+
 ## License 
 The `pyauthenticator` package is licensed under the [BSD-3-Clause license](https://github.com/jan-janssen/pyauthenticator/blob/main/LICENSE). 
