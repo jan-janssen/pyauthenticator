@@ -77,6 +77,26 @@ jobs:
         pip install . --no-deps --no-build-isolation
         pip check
 
+  minimal:
+    needs: [black]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Conda config
+      shell: bash -l {0}
+      run: echo -e "channels:\n  - conda-forge\n" > .condarc
+    - uses: conda-incubator/setup-miniconda@v3
+      with:
+        python-version: "3.14"
+        miniforge-version: latest
+        condarc-file: .condarc
+        environment-file: .ci_support/environment-mini.yml
+    - name: Test
+      shell: bash -l {0}
+      run: |
+        pip install --no-deps .
+        coverage run
+
   unittest:
     needs: [black]
     runs-on: ${{ matrix.operating-system }}
