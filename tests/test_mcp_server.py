@@ -3,15 +3,6 @@ import os
 import tempfile
 import unittest
 
-from pyauthenticator.mcp_server import (
-    add_service,
-    get_code,
-    get_qrcode,
-    list_services,
-    main,
-    mcp,
-    remove_service,
-)
 from pyauthenticator._config import load_config, write_config
 from pyauthenticator.api import generate_qrcode
 
