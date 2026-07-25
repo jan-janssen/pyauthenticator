@@ -14,7 +14,11 @@ from pyzbar.pyzbar import decode
 from pyauthenticator._config import load_config, write_config
 from pyauthenticator.api import (
     add_service as add_service_from_path,
+)
+from pyauthenticator.api import (
     get_totp_for_key_in_dict,
+)
+from pyauthenticator.api import (
     list_services as list_services_internal,
 )
 
@@ -46,7 +50,10 @@ def _format_unknown_service_error(service: str, config_dict: Dict[str, Any]) -> 
         return "\n".join(
             ['The service "' + service + '" does not exist.', ""]
             + ["The config file ~/.pyauthenticator contains the following services:"]
-            + ["  * " + entry for entry in list_services_internal(config_dict=config_dict)]
+            + [
+                "  * " + entry
+                for entry in list_services_internal(config_dict=config_dict)
+            ]
             + [
                 "",
                 "Choose one of these or add a new service using:",
@@ -100,7 +107,9 @@ def add_service(
         add_service_from_path(
             key=service, qrcode_png_file_name=qrcode_path, config_dict=config_dict
         )
-        return "The service '" + service + "' was added, from file <" + qrcode_path + ">."
+        return (
+            "The service '" + service + "' was added, from file <" + qrcode_path + ">."
+        )
     assert qrcode_base64 is not None
     try:
         qrcode_bytes = base64.b64decode(qrcode_base64.encode("utf-8"), validate=True)
