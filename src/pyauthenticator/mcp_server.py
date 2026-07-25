@@ -180,10 +180,7 @@ def create_mcp_server() -> Any:
     return mcp
 
 
-if FastMCP is not None and MCPImage is not None:
-    mcp = create_mcp_server()
-else:
-    mcp = None
+mcp = create_mcp_server() if FastMCP is not None and MCPImage is not None else None
 
 
 def main() -> None:
