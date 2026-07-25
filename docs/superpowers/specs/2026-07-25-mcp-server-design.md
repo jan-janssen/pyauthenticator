@@ -109,7 +109,9 @@ path.
 ## Packaging, CI, docs
 
 - `pyproject.toml`: add `[project.optional-dependencies]` with
-  `mcp = ["mcp>=1.2.0"]`, and a new entry under `[project.scripts]`:
+  `mcp = ["mcp>=1.2.0"]` (exact lower bound to be confirmed against the
+  latest published `mcp` SDK release at implementation time), and a new
+  entry under `[project.scripts]`:
   `pyauthenticator-mcp = "pyauthenticator.mcp_server:main"`. CLI-only
   installs (`pip install pyauthenticator`) get no new dependency;
   `pip install pyauthenticator[mcp]` pulls in the SDK.
