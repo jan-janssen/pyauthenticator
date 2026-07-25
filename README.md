@@ -112,6 +112,50 @@ The server runs over the stdio transport and reads/writes the same `~/.pyauthent
 configuration file as the command line interface, so services added via one interface are
 immediately available in the other.
 
+### Locating `claude_desktop_config.json`
+Claude Desktop reads its MCP server configuration from a `claude_desktop_config.json` file. Its
+default location depends on the operating system:
+* macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+* Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+* Linux: `~/.config/Claude/claude_desktop_config.json`
+
+Rather than remembering the path, you can let Claude Desktop open the file for you: open
+**Settings**, switch to the **Developer** tab, and click **Edit Config**. This opens the folder
+containing `claude_desktop_config.json` (creating an empty one if it does not exist yet) in your
+system file manager, ready to be opened in a text editor.
+
+The file usually already contains other, unrelated settings managed by Claude Desktop itself
+(window/pane layout, feature flags, per-account preferences, and so on) in addition to the
+`mcpServers` section. Only add or edit the `mcpServers` entry for `pyauthenticator` and leave the
+rest of the file untouched, for example:
+```json
+{
+  "mcpServers": {
+    "pyauthenticator": {
+      "command": "/absolute/path/to/pyauthenticator-mcp"
+    }
+  },
+  "preferences": {
+    "...": "..."
+  }
+}
+```
+
+### Use an absolute path for `command`
+Claude Desktop does not launch MCP servers through your interactive login shell, so it will not
+source `~/.zshrc`, `~/.bashrc`, or a `conda`/`mamba` environment activation script. If
+`pyauthenticator-mcp` was installed into a conda/mamba environment or any location that is not on
+the reduced `PATH` Claude Desktop uses to spawn subprocesses, referencing the bare command name
+(`"command": "pyauthenticator-mcp"`) will fail with a "command not found"-style error even though
+it works fine in your terminal.
+
+To avoid this, set `command` to the absolute path of the executable, for example
+`/Users/<you>/mambaforge/bin/pyauthenticator-mcp` or `/Users/<you>/.venv/bin/pyauthenticator-mcp`.
+You can find this path by activating the relevant environment in your terminal and running:
+```bash
+which pyauthenticator-mcp
+```
+
 ### Available tools
 | Tool | Arguments | Description |
 | --- | --- | --- |
