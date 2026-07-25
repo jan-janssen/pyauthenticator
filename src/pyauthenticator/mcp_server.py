@@ -10,6 +10,8 @@ from typing import Any, Dict, List, Optional
 import qrcode
 from PIL import Image as PilImage
 from pyzbar.pyzbar import decode
+from mcp.server.fastmcp import FastMCP
+from mcp.server.fastmcp import Image
 
 from pyauthenticator._config import load_config, write_config
 from pyauthenticator.api import (
@@ -21,28 +23,6 @@ from pyauthenticator.api import (
 from pyauthenticator.api import (
     list_services as list_services_internal,
 )
-
-FastMCP = None
-MCPImage = None
-MCP_IMPORT_ERROR: Optional[ImportError] = None
-
-try:
-    from mcp.server.fastmcp import FastMCP as _FastMCP
-    from mcp.server.fastmcp import Image as _MCPImage
-except ImportError as import_error:
-    MCP_IMPORT_ERROR = import_error
-else:
-    FastMCP = _FastMCP
-    MCPImage = _MCPImage
-
-
-def _require_mcp() -> Any:
-    if FastMCP is None or MCPImage is None:
-        raise ImportError(
-            "The MCP server requires the optional 'mcp' dependency. "
-            "Install it with 'pip install pyauthenticator[mcp]'."
-        ) from MCP_IMPORT_ERROR
-    return FastMCP, MCPImage
 
 
 def _format_unknown_service_error(service: str, config_dict: Dict[str, Any]) -> str:
@@ -140,7 +120,6 @@ def get_qrcode(service: str) -> Any:
     """
     Return the QR code for a configured service as MCP image content.
     """
-    _, image_class = _require_mcp()
     config_dict = load_config()
     if service not in config_dict:
         raise ValueError(
@@ -148,15 +127,14 @@ def get_qrcode(service: str) -> Any:
         )
     qrcode_buffer = io.BytesIO()
     qrcode.make(config_dict[service]).save(qrcode_buffer, "PNG")
-    return image_class(data=qrcode_buffer.getvalue(), format="png")
+    return Image(data=qrcode_buffer.getvalue(), format="png")
 
 
 def create_mcp_server() -> Any:
     """
     Create the FastMCP server instance.
     """
-    fast_mcp_class, _ = _require_mcp()
-    mcp = fast_mcp_class("pyauthenticator")
+    mcp = FastMCP("pyauthenticator")
     mcp.tool(
         name="get_code",
         description="Generate a two factor authentication code for a configured service.",
@@ -180,7 +158,7 @@ def create_mcp_server() -> Any:
     return mcp
 
 
-mcp = create_mcp_server() if FastMCP is not None and MCPImage is not None else None
+mcp = create_mcp_server()
 
 
 def main() -> None:

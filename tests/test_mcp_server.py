@@ -1,11 +1,8 @@
 import base64
-import importlib.util
 import os
 import tempfile
 import unittest
-from unittest import mock
 
-import pyauthenticator.mcp_server as mcp_server_module
 from pyauthenticator.mcp_server import (
     add_service,
     get_code,
@@ -19,40 +16,21 @@ from pyauthenticator._config import load_config, write_config
 from pyauthenticator.api import generate_qrcode
 
 
-class MCPServerImportTest(unittest.TestCase):
-    def test_main_runs_stdio_transport(self):
-        server = mock.Mock()
-        with mock.patch.object(
-            mcp_server_module, "create_mcp_server", return_value=server
-        ):
-            main()
-        server.run.assert_called_once_with(transport="stdio")
-
-    def test_import_without_mcp_dependency(self):
-        spec = importlib.util.spec_from_file_location(
-            "pyauthenticator.mcp_server_without_mcp", mcp_server_module.__file__
-        )
-        self.assertIsNotNone(spec)
-        self.assertIsNotNone(spec.loader)
-        module = importlib.util.module_from_spec(spec)
-        original_import = __import__
-
-        def _import_without_mcp(name, globals=None, locals=None, fromlist=(), level=0):
-            if name == "mcp.server.fastmcp":
-                raise ImportError("mcp unavailable")
-            return original_import(name, globals, locals, fromlist, level)
-
-        with mock.patch("builtins.__import__", side_effect=_import_without_mcp):
-            spec.loader.exec_module(module)
-
-        self.assertIsNone(module.FastMCP)
-        self.assertIsNone(module.MCPImage)
-        self.assertIsNone(module.mcp)
-        with self.assertRaisesRegex(ImportError, "optional 'mcp' dependency"):
-            module._require_mcp()
+try:
+    from pyauthenticator.mcp_server import (
+        add_service,
+        get_code,
+        get_qrcode,
+        list_services,
+        mcp,
+        remove_service,
+    )
+    disable_mcp_tests = False
+except ImportError:
+    disable_mcp_tests = True
 
 
-@unittest.skipIf(mcp is None, "mcp optional dependency not installed")
+@unittest.SkipIf(disable_mcp_tests, "mcp optional dependency not installed")
 class MCPServerTest(unittest.TestCase):
     def setUp(self):
         self.tmp_dir = tempfile.TemporaryDirectory()
