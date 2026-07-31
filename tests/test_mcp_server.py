@@ -92,7 +92,7 @@ class MCPServerTest(unittest.TestCase):
     def test_get_qrcode(self):
         qrcode_image = get_qrcode(service="test")
         image_content = qrcode_image.to_image_content()
-        self.assertEqual(image_content.mimeType, "image/png")
+        self.assertEqual(image_content.mime_type, "image/png")
         self.assertTrue(len(image_content.data) > 0)
 
     def test_unknown_service_errors_include_available_services(self):

@@ -8,7 +8,7 @@ import io
 from typing import Any, Dict, List, Optional
 
 import qrcode
-from mcp.server.fastmcp import FastMCP, Image
+from mcp.server.mcpserver import Image, MCPServer
 from PIL import Image as PilImage
 from pyzbar.pyzbar import decode
 
@@ -131,9 +131,9 @@ def get_qrcode(service: str) -> Any:
 
 def create_mcp_server() -> Any:
     """
-    Create the FastMCP server instance.
+    Create the MCPServer instance.
     """
-    mcp = FastMCP("pyauthenticator")
+    mcp = MCPServer("pyauthenticator")
     mcp.tool(
         name="get_code",
         description="Generate a two factor authentication code for a configured service.",
