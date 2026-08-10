@@ -1,6 +1,10 @@
 format: jb-book
 root: README.md
 chapters:
+- file: ssh-askpass.md
+- file: shell-automation.md
+- file: python-totp.md
+- file: mcp.md
 - file: technology.ipynb
 - file: implementation.ipynb
 - file: summary.md
