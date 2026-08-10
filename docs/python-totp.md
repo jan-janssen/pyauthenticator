@@ -1,4 +1,4 @@
-# Generating TOTP codes from Python
+# TOTP codes for Python
 
 ## Problem
 

@@ -1,4 +1,4 @@
-# Giving an MCP agent (e.g. Claude) access to TOTP codes
+# MCP agent for TOTP codes
 
 ## Problem
 
