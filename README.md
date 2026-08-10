@@ -340,6 +340,8 @@ pyauthenticator myservice
 OTP="$(pyauthenticator myservice)"
 ```
 
+See [Using TOTP codes in shell scripts and CLI workflows](https://github.com/jan-janssen/pyauthenticator/blob/main/docs/shell-automation.md) for more examples.
+
 ### Python applications
 
 ```python
@@ -348,9 +350,13 @@ from pyauthenticator import get_two_factor_code
 otp = get_two_factor_code("myservice")
 ```
 
+See [Generating TOTP codes from Python](https://github.com/jan-janssen/pyauthenticator/blob/main/docs/python-totp.md) for more examples.
+
 ### SSH and remote-system automation
 
 `pyauthenticator` can be combined with `SSH_ASKPASS` when an SSH login requires a password followed by a TOTP code.
+
+See [Automating SSH logins that require a password and a TOTP code](https://github.com/jan-janssen/pyauthenticator/blob/main/docs/ssh-askpass.md) for a complete, working example.
 
 `ssh` invokes the program configured as `SSH_ASKPASS` whenever it needs to request input, passing the prompt text as an argument. Setting `SSH_ASKPASS_REQUIRE=force` makes `ssh` use this program even when run from an interactive terminal.
 
@@ -395,6 +401,8 @@ The exact prompt text (`Your OTP:` in this example) depends on the SSH server an
 ### Agent and MCP workflows
 
 The optional MCP server exposes configured TOTP credentials to MCP-compatible applications while retaining the same local credential store used by the CLI and Python interfaces.
+
+See [Giving an MCP agent (e.g. Claude) access to TOTP codes](https://github.com/jan-janssen/pyauthenticator/blob/main/docs/mcp.md) for a complete setup and example.
 
 ## Support
 
