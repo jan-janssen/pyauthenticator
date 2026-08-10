@@ -1,4 +1,4 @@
-# Using TOTP codes in shell scripts and CLI workflows
+# TOTP codes in shell scripts
 
 ## Problem
 

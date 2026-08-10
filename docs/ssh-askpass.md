@@ -1,4 +1,4 @@
-# Automating SSH logins that require a password and a TOTP code
+# Automating SSH logins
 
 ## Problem
 
