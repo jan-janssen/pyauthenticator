@@ -45,7 +45,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/jan-janssen/pyauthenticator"
-Documentation = "https://github.com/jan-janssen/pyauthenticator/blob/master/README.md"
+Documentation = "https://pyauthenticator.readthedocs.io"
 Source = "https://github.com/jan-janssen/pyauthenticator"
 Tracker = "https://github.com/jan-janssen/pyauthenticator/issues"
 
