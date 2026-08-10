@@ -237,6 +237,8 @@ For automated access, prefer mechanisms explicitly designed for machine authenti
 
 `pyauthenticator` is intended primarily for services where TOTP authentication is required and no suitable machine-oriented alternative exists.
 
+Because automating two-factor authentication can conflict with the security policies of the organization operating the target service — for example institutional computing centres — confirm that this use is permitted before automating TOTP entry with `pyauthenticator`.
+
 ## MCP server
 
 `pyauthenticator` also provides an MCP server for MCP-compatible hosts on Python 3.10+.
@@ -348,7 +350,47 @@ otp = get_two_factor_code("myservice")
 
 ### SSH and remote-system automation
 
-`pyauthenticator` can be combined with tools such as `SSH_ASKPASS` when an SSH service requires a password followed by a TOTP code.
+`pyauthenticator` can be combined with `SSH_ASKPASS` when an SSH login requires a password followed by a TOTP code.
+
+`ssh` invokes the program configured as `SSH_ASKPASS` whenever it needs to request input, passing the prompt text as an argument. Setting `SSH_ASKPASS_REQUIRE=force` makes `ssh` use this program even when run from an interactive terminal.
+
+For example, `~/.bashrc` or `~/.zshrc` could contain:
+
+```bash
+export SSH_ASKPASS="$HOME/.ssh/askpass-helper.sh"
+export SSH_ASKPASS_REQUIRE=force
+```
+
+and `~/.ssh/askpass-helper.sh` (marked executable with `chmod +x`) could dispatch based on the prompt text:
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+PROMPT="${1:-}"
+
+case "$PROMPT" in
+    *"'s password:"*)
+        # Retrieve the password from a secure credential store,
+        # e.g. the macOS keychain via `security find-generic-password`.
+        echo "<password>"
+        ;;
+
+    *"Your OTP:"*)
+        # Generate the current TOTP code for the "myservice" account.
+        exec pyauthenticator myservice
+        ;;
+
+    *)
+        echo "Unexpected SSH prompt: $PROMPT" >&2
+        exit 1
+        ;;
+esac
+```
+
+The exact prompt text (`Your OTP:` in this example) depends on the SSH server and PAM configuration of the target system and may need to be adjusted.
+
+> **Note:** Automating two-factor prompts like this removes the human-in-the-loop step that two-factor authentication is meant to provide, and some computing centres and organizations explicitly prohibit it. Only use this approach when it is consistent with the security policies of the systems and organizations you connect to — check with the relevant administrators first. The same caution applies to any automated use of `pyauthenticator` beyond this specific example.
 
 ### Agent and MCP workflows
 
