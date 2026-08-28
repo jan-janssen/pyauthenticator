@@ -10,4 +10,4 @@ dependencies:
 - pyzbar=0.1.9
 - zbar=0.10
 - pillow=12.3.0
-- mcp=2.0.0
+- mcp=2.1.0
