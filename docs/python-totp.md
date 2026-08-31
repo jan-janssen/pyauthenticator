@@ -70,7 +70,9 @@ from myapp.client import Client
 @pytest.fixture
 def authenticated_client():
     client = Client(base_url="https://staging.example.com")
-    client.login(username="ci-bot", password="...", otp=get_two_factor_code("myservice"))
+    client.login(
+        username="ci-bot", password="...", otp=get_two_factor_code("myservice")
+    )
     return client
 
 
