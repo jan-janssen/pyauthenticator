@@ -53,6 +53,13 @@ Tracker = "https://github.com/jan-janssen/pyauthenticator/issues"
 mcp = [
     "mcp==2.2.0",
 ]
+docs = [
+    "myst-parser",
+    "nbsphinx",
+    "sphinx",
+    "sphinx_rtd_theme",
+    "jupyter-book==1.0.0",
+]
 
 [project.scripts]
 pyauthenticator = "pyauthenticator._cmd:command_line_parser"
