@@ -28,7 +28,7 @@ class MCPServerTest(unittest.TestCase):
         self.old_home = os.environ.get("HOME")
         os.environ["HOME"] = self.tmp_dir.name
         self.config_dict = {
-            "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test"
+            "test": "otpauth://totp/Test%3A%20root%40github.com?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=Test"
         }
         write_config(config_dict=self.config_dict)
         self.qr_code_png = os.path.join(self.tmp_dir.name, "test.png")

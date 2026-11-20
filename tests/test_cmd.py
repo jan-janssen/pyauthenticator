@@ -16,7 +16,7 @@ class CmdSubprocessTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_dict = {
-            "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test"
+            "test": "otpauth://totp/Test%3A%20root%40github.com?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=Test"
         }
         cls.config_path = os.path.abspath(os.path.expanduser(default_config_file))
         if not os.path.exists(cls.config_path):
@@ -57,7 +57,7 @@ class CmdParserTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_dict = {
-            "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test"
+            "test": "otpauth://totp/Test%3A%20root%40github.com?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=Test"
         }
         cls.config_path = os.path.abspath(os.path.expanduser(default_config_file))
         if not os.path.exists(cls.config_path):

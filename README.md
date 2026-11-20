@@ -219,6 +219,10 @@ For example:
 
 The URI contains the TOTP secret required to generate authentication codes.
 
+With pyotp 2.12, secrets must be at least 112 bits (14 bytes) after Base32 decoding.
+If an existing service has a shorter secret, re-enroll its authenticator with the
+service and import the new QR code; changing the local secret alone will not work.
+
 ## Security considerations
 
 The TOTP secret stored by `pyauthenticator` is an authentication credential. Anyone who can obtain this secret can generate the same one-time passwords.
