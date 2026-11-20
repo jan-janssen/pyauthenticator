@@ -14,7 +14,7 @@ class TestUserInterface(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_dict = {
-            "test": "otpauth://totp/Test%3A%20root%40github.com?secret=6IQXETC4ADOSMMUN&issuer=Test"
+            "test": "otpauth://totp/Test%3A%20root%40github.com?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=Test"
         }
         cls.config_path = os.path.abspath(os.path.expanduser(default_config_file))
         if not os.path.exists(cls.config_path):
@@ -40,7 +40,7 @@ class TestUserInterface(unittest.TestCase):
         qr_code_file = "test_qr_add.png"
         import qrcode
 
-        qrcode.make("otpauth://totp/Test?secret=JBSWY3DPEHPK3PXP&issuer=Test").save(
+        qrcode.make("otpauth://totp/Test?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=Test").save(
             qr_code_file, "PNG"
         )
 

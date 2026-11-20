@@ -13,9 +13,9 @@ class TestAuthenticatorCore(unittest.TestCase):
     """
 
     def setUp(self):
-        self.otpauth_str = "otpauth://totp/Test?secret=JBSWY3DPEHPK3PXP&issuer=Test"
+        self.otpauth_str = "otpauth://totp/Test?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=Test"
         self.qr_code_file = "test_qr.png"
-        self.secret = "JBSWY3DPEHPK3PXP"
+        self.secret = "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ"
 
     def tearDown(self):
         if os.path.exists(self.qr_code_file):
@@ -43,7 +43,7 @@ class TestAuthenticatorCore(unittest.TestCase):
         Test generating a TOTP code with digits and period options
         """
         otpauth_str = (
-            "otpauth://totp/Test?secret=JBSWY3DPEHPK3PXP&issuer=Test&digits=8&period=60"
+            "otpauth://totp/Test?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=Test&digits=8&period=60"
         )
         code = get_totp(otpauth_str=otpauth_str)
         self.assertTrue(code.isdigit())
